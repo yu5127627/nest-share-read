@@ -17,6 +17,6 @@ deploy: # 部署脚本
     repo: git@gitee.com:sxczykn/shareRead.git # 远程仓库地址
     path: /home/www/shareRead # 拉取到服务器某个目录下
     pre-deploy: git fetch --all # 部署前执行
-    post-deploy: npm install &&  pm2 reload manage.yaml --env production # 部署后执行
+    post-deploy: npm install &&  pm2 reload manage.yaml --env production #部署后执行
     env:
       NODE_ENV: production

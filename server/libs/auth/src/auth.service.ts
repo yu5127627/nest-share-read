@@ -27,8 +27,6 @@ export class AuthService {
       .where('user.username =:username ', { username })
       .addSelect('user.password')
       .getOne();
-    manager.login_time = Date.now();
-    await this.managerRepository.save(manager);
 
     if (!manager) {
       throw new BadRequestException('用户不存在');
@@ -36,6 +34,9 @@ export class AuthService {
     if (!compareSync(password, manager.password)) {
       throw new BadRequestException('密码错误');
     }
+
+    manager.login_time = Date.now();
+    await this.managerRepository.save(manager);
 
     return manager;
   }
