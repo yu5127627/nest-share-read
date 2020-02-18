@@ -1,0 +1,100 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/tabbar/bookshelf",
+			"style": {
+				"navigationBarTitleText": "书架",
+				"app-plus": {
+					"bounce": "none"
+					// "titleNView": false //禁用原生导航栏
+				}
+			}
+		},
+		{
+			"path": "pages/tabbar/bookshop",
+			"style": {
+				"navigationBarTitleText": "书城"
+			}
+		},
+		{
+			"path": "pages/tabbar/activity",
+			"style": {
+				"navigationBarTitleText": "活动"
+			}
+		},
+		{
+			"path": "pages/tabbar/ranking",
+			"style": {
+				"navigationBarTitleText": "排行"
+			}
+		},
+		{
+			"path": "pages/tabbar/mine",
+			"style": {
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": false //禁用原生导航栏
+				}
+			}
+		},
+		{
+			"path": "pages/user/login",
+			"style": {
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": false //禁用原生导航栏
+				}
+			}
+		}, {
+			"path": "pages/user/register",
+			"style": {}
+		}
+	    ,{
+            "path" : "pages/book/bookinfo",
+            "style" : {}
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "猿来阅",
+		"navigationBarBackgroundColor": "#13BFA3",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#8a8a8a",
+		"selectedColor": "#13BFA3",
+		"borderStyle": "white",
+		"backgroundColor": "#FFFFFF",
+		"list": [{
+				"pagePath": "pages/tabbar/bookshelf",
+				"iconPath": "static/tabbar/bookshelf.png",
+				"selectedIconPath": "static/tabbar/bookshelfAct.png",
+				"text": "书架"
+			},
+			{
+				"pagePath": "pages/tabbar/bookshop",
+				"iconPath": "static/tabbar/bookshop.png",
+				"selectedIconPath": "static/tabbar/bookshopAct.png",
+				"text": "书城"
+			},
+			{
+				"pagePath": "pages/tabbar/activity",
+				"iconPath": "static/tabbar/activity.png",
+				"selectedIconPath": "static/tabbar/activityAct.png",
+				"text": "活动"
+			},
+			{
+				"pagePath": "pages/tabbar/ranking",
+				"iconPath": "static/tabbar/ranking.png",
+				"selectedIconPath": "static/tabbar/rankingAct.png",
+				"text": "排行"
+			},
+			{
+				"pagePath": "pages/tabbar/mine",
+				"iconPath": "static/tabbar/mine.png",
+				"selectedIconPath": "static/tabbar/mineAct.png",
+				"text": "我的"
+			}
+		]
+	}
+}

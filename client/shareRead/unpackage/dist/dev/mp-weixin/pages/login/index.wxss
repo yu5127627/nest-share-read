@@ -1,0 +1,47 @@
+
+.content.data-v-356ac956 {position: absolute; top: 0;width: 100%;}
+.logo.data-v-356ac956 {text-align: center; margin: 96rpx auto 73rpx auto;}
+.logo image.data-v-356ac956 {width: 50%;}
+.login-form.data-v-356ac956 {width: 630rpx; margin: auto;}
+.login-form .item.data-v-356ac956 {
+	width: 630rpx;
+	height: 84rpx;
+	border-radius: 6rpx;
+	margin-bottom: 33rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: space-around;
+	        justify-content: space-around;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	        align-items: center;
+	background-color: #4781e2;
+}
+.login-form input.data-v-356ac956 {color: #fff; height: 84rpx; line-height: 84rpx;}
+.login-form .item .icon.data-v-356ac956{width: 36rpx; height: 40rpx;}
+.input-placeholder.data-v-356ac956 {color: #fff; line-height: 84rpx; height: 84rpx; margin: auto;}
+.login-form .btn.data-v-356ac956{ margin: 43rpx auto 22rpx auto;
+	text-align: center;
+	height: 84rpx;
+	line-height: 84rpx;
+	border-radius: 6rpx;
+	background-color: #6ea0f8;
+}
+.forgot-pwd.data-v-356ac956 {text-align: right;}
+.login-third .text.data-v-356ac956{margin: 137rpx auto 106rpx auto; text-align: center;
+}
+.login-third .flex.data-v-356ac956{text-align: center; display: -webkit-box; display: -webkit-flex; display: flex; -webkit-justify-content: space-around; justify-content: space-around;
+}
+.login-third .flex image.data-v-356ac956 {width: 88rpx; height: 88rpx;}
+text.data-v-356ac956{
+	height: 30rpx;
+	font-family: PingFang-SC-Regular;
+	font-size: 32rpx;
+	font-weight: bold;
+	font-stretch: normal;
+	line-height: 40rpx;
+	letter-spacing: 3rpx;
+	color: #ffffff;
+}
+

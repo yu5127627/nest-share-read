@@ -1,0 +1,58 @@
+{
+  "pages": [
+    "pages/tabbar/bookshelf",
+    "pages/tabbar/bookshop",
+    "pages/tabbar/activity",
+    "pages/tabbar/ranking",
+    "pages/tabbar/mine",
+    "pages/login/index",
+    "pages/login/register",
+    "pages/book/bookinfo"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "猿来阅",
+    "navigationBarBackgroundColor": "#13BFA3",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#13BFA3",
+    "borderStyle": "white",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/tabbar/bookshelf",
+        "iconPath": "static/tabbar/bookshelf.png",
+        "selectedIconPath": "static/tabbar/bookshelfAct.png",
+        "text": "书架"
+      },
+      {
+        "pagePath": "pages/tabbar/bookshop",
+        "iconPath": "static/tabbar/bookshop.png",
+        "selectedIconPath": "static/tabbar/bookshopAct.png",
+        "text": "书城"
+      },
+      {
+        "pagePath": "pages/tabbar/activity",
+        "iconPath": "static/tabbar/activity.png",
+        "selectedIconPath": "static/tabbar/activityAct.png",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/tabbar/ranking",
+        "iconPath": "static/tabbar/ranking.png",
+        "selectedIconPath": "static/tabbar/rankingAct.png",
+        "text": "排行"
+      },
+      {
+        "pagePath": "pages/tabbar/mine",
+        "iconPath": "static/tabbar/mine.png",
+        "selectedIconPath": "static/tabbar/mineAct.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}
