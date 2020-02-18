@@ -14,7 +14,7 @@ deploy: # 部署脚本
     port: 22 # ssh端口
     ref: origin/master # 要拉取的git分支
     ssh_options: StrictHostKeyChecking=no # SSH 公钥检查
-    repo: https://github.com/git@gitee.com:sxczykn/shareRead.git # 远程仓库地址
+    repo: git@gitee.com:sxczykn/shareRead.git # 远程仓库地址
     path: /home/www/shareRead # 拉取到服务器某个目录下
     pre-deploy: git fetch --all # 部署前执行
     post-deploy: npm install &&  pm2 reload manage.yaml --env production # 部署后执行
