@@ -1,8 +1,8 @@
 //  http 请求配置项
 export default {
 	//	开发者服务器接口地址
-	url: "http://localhost:8002/app/",
-	// url: "http://localhost:8000",
+	// url: "http://localhost:8002/app/",
+	url: "http://read.sxczykn.top/app/",
 	//	请求的参数
 	data: {},
 	//	设置请求的 header，header 中不能设置 Referer。
