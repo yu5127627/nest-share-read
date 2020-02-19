@@ -477,14 +477,14 @@ export default {
     },
     handleBooksChange (file, fileList) {
       // 规定允许上传的文件最大值
-      const MAX_VAL = 1024 * 1024 * 20
+      const MAX_VAL = 1024 * 1024 * 300
       // 规定允许上传的文件格式
       const ALLOW_FORMAT = ['pdf']
       // 以 . 分割文件名称，获取文件后缀名
       const strArr = file.name.split('.')
       if (file.size > MAX_VAL) {
         this.$message({
-          message: '文件大小超过限制，文件最大为20MB!',
+          message: '文件大小超过限制，文件最大为300MB!',
           type: 'warning'
         })
         // 触发移除当前项
@@ -492,7 +492,7 @@ export default {
       } else if (!ALLOW_FORMAT.includes(strArr[strArr.length - 1])) {
         // 判断是否时允许上传的文件格式，因为 window 允许 . 为文件名，故取数组中的最后一项为文件后缀名
         this.$message({
-          message: '文件格式不符，只能上传pdf文件!',
+          message: '文件格式不符，只能上传 pdf 文件!',
           type: 'warning'
         })
         // 触发移除当前项
@@ -521,14 +521,14 @@ export default {
     },
     handleCoverChange (file, fileList) {
       // 规定允许上传的文件最大值
-      const MAX_VAL = 1024 * 1024 * 0.3
+      const MAX_VAL = 1024 * 1024 * 0.5
       // 规定允许上传的文件格式
-      const ALLOW_FORMAT = ['jpg', 'png']
+      const ALLOW_FORMAT = ['jpg', 'png','jpeg']
       // 以 . 分割文件名称，获取文件后缀名
       const strArr = file.name.split('.')
       if (file.size > MAX_VAL) {
         this.$message({
-          message: '文件大小超过限制，文件最大为300KB!',
+          message: '文件大小超过限制，文件最大为500KB!',
           type: 'warning'
         })
         // 触发移除当前项
@@ -536,7 +536,7 @@ export default {
       } else if (!ALLOW_FORMAT.includes(strArr[strArr.length - 1])) {
         // 判断是否时允许上传的文件格式，因为 window 允许 . 为文件名，故取数组中的最后一项为文件后缀名
         this.$message({
-          message: '文件格式不符，只能上传 jpg/png 文件!',
+          message: '文件格式不符，只能上传 jpg/png/jpeg 文件!',
           type: 'warning'
         })
         // 触发移除当前项
