@@ -2233,7 +2233,7 @@ exports.checkDirAndCreate = filePath => {
         }
     }
 };
-exports.coverPath = '/upload/images/covers';
+exports.coverPath = 'upload/images/covers';
 exports.coverVerification = {
     limits: { fileSize: 1024 * 300 },
     fileFilter(req, file, cb) {
@@ -2244,7 +2244,7 @@ exports.coverVerification = {
             : cb(new common_1.BadRequestException('文件格式错误！请确保你上传的为图片。'), false);
     }
 };
-exports.bookPath = '/upload/books';
+exports.bookPath = 'upload/books';
 exports.bookVerification = {
     limits: { fileSize: 1024 * 1024 * 100 },
     fileFilter(req, file, cb) {
@@ -2255,7 +2255,7 @@ exports.bookVerification = {
             : cb(new common_1.BadRequestException('文件格式错误！请确保你上传的为 PDF 格式。'), false);
     }
 };
-exports.catalogPath = '/upload/images/catalog';
+exports.catalogPath = 'upload/images/catalog';
 exports.catalogVerification = {
     limits: { fileSize: 1024 * 500 },
     fileFilter(req, file, cb) {
@@ -2313,19 +2313,19 @@ const passport_1 = __webpack_require__(13);
 let UploadController = class UploadController {
     uploadImg(file) {
         const { path } = file;
-        return { coverUrl: path };
+        return { coverUrl: '/' + path };
     }
     uploadCatalog(files) {
         let catalogArr = [];
         for (const item of files) {
             const { path } = item;
-            catalogArr.push(path);
+            catalogArr.push('/' + path);
         }
         return catalogArr;
     }
     uploadBook(file) {
         const { path } = file;
-        return { bookUrl: path };
+        return { bookUrl: '/' + path };
     }
 };
 __decorate([
