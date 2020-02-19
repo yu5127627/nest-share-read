@@ -49,7 +49,7 @@ export const checkDirAndCreate = filePath => {
 };
 
 // 封面图储存路径
-export const coverPath: string = 'upload/images/covers';
+export const coverPath: string = '/upload/images/covers';
 // 封面图验证规则
 export const coverVerification: object = {
   limits: { fileSize: 1024 * 300 }, // fileSize:kb
@@ -66,7 +66,7 @@ export const coverVerification: object = {
 };
 
 // 图书储存路径
-export const bookPath: string = 'upload/books';
+export const bookPath: string = '/upload/books';
 // 图书验证
 export const bookVerification: object = {
   limits: { fileSize: 1024 * 1024 * 100 },
@@ -83,7 +83,7 @@ export const bookVerification: object = {
 };
 
 // 目录截图储存路径
-export const catalogPath: string = 'upload/images/catalog';
+export const catalogPath: string = '/upload/images/catalog';
 // 目录验证
 export const catalogVerification: object = {
   limits: { fileSize: 1024 * 500 },

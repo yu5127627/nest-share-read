@@ -62,6 +62,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="progress-box" v-if="progress.isShow">
+			<progress :percent="progress.percent" show-info stroke-width="3" active />
+		</view>
 		<view class="comment">
 			<view class="comment-title">
 				<view class="title">
@@ -80,6 +83,7 @@
 				评论列表
 			</view>
 		</view>
+
 		<view class="zhanwei" style="height: 120rpx;background-color: #CCCCCC;"></view>
 		<view class="fixed-module">
 			<view class="add-book">
@@ -108,30 +112,88 @@
 		data() {
 			return {
 				apiUrl: getApp().globalData.api,
-				book: null
+				book: null,
+				progress: {
+					percent: 0,
+					isShow: false
+				},
+				savedFilePath: null,
+				currentBook: null
 			};
 		},
 		methods: {
-			handleDownload(url){
-				const downloadTask = uni.downloadFile({
-				    url: this.apiUrl+url, 
-				    success: (res) => {
-						console.log(res)
-				        if (res.statusCode === 200) {
-				            console.log('下载成功');
-				        }
-				    }
+			handleShowModal() {
+				uni.showModal({
+					title: '提示',
+					content: '下载已完成，是否开始阅读?',
+					success: res => {
+						if (res.confirm) {
+							uni.openDocument({
+								filePath: this.savedFilePath,
+								success: function(res) {
+									console.log('打开文档成功');
+								}
+							});
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
 				});
-				
+			},
+			handleSetStorage() {
+				let newBooks = [];
+				newBooks.push(this.currentBook)
+				console.log(JSON.stringify(newBooks))
+				uni.setStorage({
+					key: 'books',
+					data: JSON.stringify(newBooks),
+					success: (res) => {
+						console.log(JSON.stringify(res))
+						this.handleShowModal()
+					},
+					fail: (err) => {
+						console.log(err)
+					}
+				});
+			},
+			handleDownload(url) {
+				this.progress.isShow = true;
+				const downloadTask = uni.downloadFile({
+					url: this.apiUrl + url,
+					success: res => {
+						if (res.statusCode === 200) {
+							uni.saveFile({
+								tempFilePath: res.tempFilePath,
+								success: fileres => {
+									this.savedFilePath = fileres.savedFilePath;
+									const {
+										cover,
+										id,
+										zh_name
+									} = this.book;
+									this.currentBook = {
+										path: this.savedFilePath,
+										id,
+										cover,
+										zh_name
+									}
+									this.handleSetStorage()
+								}
+							});
+						}
+					}
+				});
+
 				downloadTask.onProgressUpdate((res) => {
-				    console.log('下载进度' + res.progress);
-				    console.log('已经下载的数据长度' + res.totalBytesWritten);
-				    console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
-				
-				    // 测试条件，取消下载任务。
-				    if (res.progress > 50) {
-				        downloadTask.abort();
-				    }
+					this.progress.percent = res.progress
+					// console.log('下载进度' + res.progress);
+					// console.log('已经下载的数据长度' + res.totalBytesWritten);
+					// console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
+
+					// // 测试条件，取消下载任务。
+					// if (res.progress == 100) {
+					// 	this.handleSetStorage()
+					// }
 				});
 			},
 			async getBook(id) {
@@ -139,7 +201,6 @@
 					result
 				} = await this.$api.bookshop.book(id);
 				this.book = result
-				console.log(this.book)
 			}
 		},
 		onLoad(op) {
@@ -213,6 +274,7 @@
 
 			.other-item {
 				margin: 20rpx 0;
+
 				.item-title {
 					padding-left: 30rpx;
 					color: #000000;
@@ -229,6 +291,10 @@
 					line-height: 1.5;
 				}
 			}
+		}
+
+		.progress-box {
+			margin: 20rpx 20rpx;
 		}
 
 		.comment {

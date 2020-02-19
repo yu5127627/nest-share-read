@@ -5,7 +5,8 @@
 	export default {
 		globalData: {
 			token: null,
-			api:'http://localhost:8001/'
+			// api:'http://localhost:8001/'
+			api:'http://read.sxczykn.top/'
 		},
 		onLaunch() {
 			getApp().globalData.token = getStorage('token')
