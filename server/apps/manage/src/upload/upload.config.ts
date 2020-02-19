@@ -52,7 +52,7 @@ export const checkDirAndCreate = filePath => {
 export const coverPath: string = 'upload/images/covers';
 // 封面图验证规则
 export const coverVerification: object = {
-  limits: { fileSize: 1024 * 300 }, // fileSize:kb
+  limits: { fileSize: 1024 * 500 }, // fileSize:kb
   fileFilter(req, file, cb) {
     const mimetype = file.mimetype.split('/')[0].toLowerCase();
     const isErr = mimetype === 'image' ? true : false;
@@ -69,7 +69,7 @@ export const coverVerification: object = {
 export const bookPath: string = 'upload/books';
 // 图书验证
 export const bookVerification: object = {
-  limits: { fileSize: 1024 * 1024 * 100 },
+  limits: { fileSize: 1024 * 1024 * 300 },
   fileFilter(req, file, cb) {
     const mimetype = file.mimetype.split('/')[1].toLowerCase();
     const isErr = mimetype === 'pdf' ? true : false;

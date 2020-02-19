@@ -2235,7 +2235,7 @@ exports.checkDirAndCreate = filePath => {
 };
 exports.coverPath = 'upload/images/covers';
 exports.coverVerification = {
-    limits: { fileSize: 1024 * 300 },
+    limits: { fileSize: 1024 * 500 },
     fileFilter(req, file, cb) {
         const mimetype = file.mimetype.split('/')[0].toLowerCase();
         const isErr = mimetype === 'image' ? true : false;
@@ -2246,7 +2246,7 @@ exports.coverVerification = {
 };
 exports.bookPath = 'upload/books';
 exports.bookVerification = {
-    limits: { fileSize: 1024 * 1024 * 100 },
+    limits: { fileSize: 1024 * 1024 * 300 },
     fileFilter(req, file, cb) {
         const mimetype = file.mimetype.split('/')[1].toLowerCase();
         const isErr = mimetype === 'pdf' ? true : false;
