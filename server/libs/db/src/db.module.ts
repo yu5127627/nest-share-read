@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { DbService } from './db.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Email } from './entity/email.entity';
+import { App } from './entity/app.entity';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { Email } from './entity/email.entity';
         username: process.env.DB_NAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
-        entities: [Category, Book, Manager, User, Email],
+        entities: [Category, Book, Manager, User, Email, App],
         synchronize: true
       })
     })

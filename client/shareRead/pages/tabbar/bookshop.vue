@@ -58,8 +58,10 @@
 			},
 			async tabChange(index, id) {
 				this.TabCur = index;
-				const categoryBooks = await this.$api.bookshop.categoryBooks(id)
-				console.log(categoryBooks)
+				const {
+					result
+				} = await this.$api.bookshop.categoryBooks(id)
+				this.categoryData = result
 			},
 			change(e) {
 				this.current = e.detail.current;

@@ -8,7 +8,7 @@
 					<image v-else src="../../static/avatar.jpg"></image>
 				</view>
 				<!-- 已登录 -->
-				<view class="info" v-if="token!=null&&userinfo!=null">
+				<view class="info" v-if="userinfo!=null">
 					<view class="username">{{userinfo.username}}</view>
 					<view class="integral">{{userinfo.email}}</view>
 				</view>
@@ -64,7 +64,6 @@
 	export default {
 		data() {
 			return {
-				token: getApp().globalData.token,
 				userinfo: null
 			};
 		},
@@ -84,16 +83,19 @@
 					duration: 2000,
 					success: () => {
 						setTimeout(()=>{
-							uni.reLaunch({
+							uni.navigateTo({
 								url:'../user/login'
 							})
 						},2000)
 					}
 				})
 			},
+			getUserinfo(){
+				this.userinfo = JSON.parse(uni.getStorageSync('user'));
+			}
 		},
 		onLoad() {
-			this.userinfo = JSON.parse(uni.getStorageSync('user'));
+			this.getUserinfo()
 		}
 	};
 </script>

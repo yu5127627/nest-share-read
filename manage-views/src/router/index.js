@@ -104,6 +104,12 @@ export const asyncRoutes = [
         name: 'manager',
         component: () => import('@/views/site/manager'),
         meta: { title: '管理员列表', icon: 'site', roles: ['admin'] }
+      },
+      {
+        path: 'app',
+        name: 'app',
+        component: () => import('@/views/site/app'),
+        meta: { title: 'app版本管理', icon: 'site', roles: ['admin'] }
       }
     ]
   },

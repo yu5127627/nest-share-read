@@ -142,11 +142,11 @@ const books_module_1 = __webpack_require__(3);
 const category_module_1 = __webpack_require__(19);
 const db_module_1 = __webpack_require__(25);
 const common_1 = __webpack_require__(10);
-const manager_module_1 = __webpack_require__(30);
-const config_1 = __webpack_require__(46);
-const upload_module_1 = __webpack_require__(47);
-const src_1 = __webpack_require__(31);
-const site_module_1 = __webpack_require__(54);
+const manager_module_1 = __webpack_require__(31);
+const config_1 = __webpack_require__(47);
+const upload_module_1 = __webpack_require__(48);
+const src_1 = __webpack_require__(32);
+const site_module_1 = __webpack_require__(55);
 let Application = class Application {
 };
 Application = __decorate([
@@ -1248,6 +1248,7 @@ const common_1 = __webpack_require__(10);
 const db_service_1 = __webpack_require__(28);
 const typeorm_1 = __webpack_require__(8);
 const email_entity_1 = __webpack_require__(29);
+const app_entity_1 = __webpack_require__(30);
 let DbModule = class DbModule {
 };
 DbModule = __decorate([
@@ -1261,7 +1262,7 @@ DbModule = __decorate([
                     username: process.env.DB_NAME,
                     password: process.env.DB_PASSWORD,
                     database: process.env.DB_DATABASE,
-                    entities: [category_entity_1.Category, book_entity_1.Book, manager_entity_1.Manager, user_entity_1.User, email_entity_1.Email],
+                    entities: [category_entity_1.Category, book_entity_1.Book, manager_entity_1.Manager, user_entity_1.User, email_entity_1.Email, app_entity_1.App],
                     synchronize: true
                 })
             })
@@ -1542,13 +1543,84 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const src_1 = __webpack_require__(31);
+const swagger_1 = __webpack_require__(7);
+const typeorm_1 = __webpack_require__(6);
+let App = class App {
+};
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'appid',
+        required: true,
+        example: '__UNI__BF91653'
+    }),
+    typeorm_1.PrimaryColumn(),
+    __metadata("design:type", String)
+], App.prototype, "appid", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: 'app版本号',
+        required: true,
+        example: '1.0.2'
+    }),
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], App.prototype, "version", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '更新内容',
+        required: true,
+        example: '常被误i悲催尾部i吧'
+    }),
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], App.prototype, "content", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '热更新下载地址',
+        required: true,
+        example: 'http://www.12345.com'
+    }),
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], App.prototype, "hot_url", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '整包更新下载地址',
+        required: true,
+        example: 'http://www.12345.com'
+    }),
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], App.prototype, "pack_url", void 0);
+App = __decorate([
+    typeorm_1.Entity()
+], App);
+exports.App = App;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const src_1 = __webpack_require__(32);
 const manager_entity_1 = __webpack_require__(27);
 const typeorm_1 = __webpack_require__(8);
 const common_1 = __webpack_require__(10);
-const manager_controller_1 = __webpack_require__(42);
-const manager_service_1 = __webpack_require__(45);
+const manager_controller_1 = __webpack_require__(43);
+const manager_service_1 = __webpack_require__(46);
 let UsersModule = class UsersModule {
 };
 UsersModule = __decorate([
@@ -1563,7 +1635,7 @@ exports.UsersModule = UsersModule;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1572,12 +1644,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(32));
-__export(__webpack_require__(36));
+__export(__webpack_require__(33));
+__export(__webpack_require__(37));
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1589,18 +1661,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const myapp_jwt_strategy_1 = __webpack_require__(33);
-const myapp_local_strategy_1 = __webpack_require__(35);
+const myapp_jwt_strategy_1 = __webpack_require__(34);
+const myapp_local_strategy_1 = __webpack_require__(36);
 const user_entity_1 = __webpack_require__(26);
 const roles_guard_1 = __webpack_require__(21);
-const manage_jwt_strategy_1 = __webpack_require__(40);
-const jwt_1 = __webpack_require__(37);
+const manage_jwt_strategy_1 = __webpack_require__(41);
+const jwt_1 = __webpack_require__(38);
 const manager_entity_1 = __webpack_require__(27);
 const typeorm_1 = __webpack_require__(8);
-const manage_local_strategy_1 = __webpack_require__(41);
+const manage_local_strategy_1 = __webpack_require__(42);
 const passport_1 = __webpack_require__(13);
 const common_1 = __webpack_require__(10);
-const auth_service_1 = __webpack_require__(36);
+const auth_service_1 = __webpack_require__(37);
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -1632,7 +1704,7 @@ exports.AuthModule = AuthModule;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1647,7 +1719,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const passport_jwt_1 = __webpack_require__(34);
+const passport_jwt_1 = __webpack_require__(35);
 const passport_1 = __webpack_require__(13);
 const common_1 = __webpack_require__(10);
 let MyappJwtStrategy = class MyappJwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy, 'myapp-jwt') {
@@ -1671,13 +1743,13 @@ exports.MyappJwtStrategy = MyappJwtStrategy;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1692,8 +1764,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const auth_service_1 = __webpack_require__(36);
-const passport_local_1 = __webpack_require__(39);
+const auth_service_1 = __webpack_require__(37);
+const passport_local_1 = __webpack_require__(40);
 const passport_1 = __webpack_require__(13);
 const common_1 = __webpack_require__(10);
 let MyappLocalStrategy = class MyappLocalStrategy extends passport_1.PassportStrategy(passport_local_1.Strategy, 'myapp-local') {
@@ -1716,7 +1788,7 @@ exports.MyappLocalStrategy = MyappLocalStrategy;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1736,10 +1808,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_entity_1 = __webpack_require__(26);
 const manager_entity_1 = __webpack_require__(27);
-const jwt_1 = __webpack_require__(37);
+const jwt_1 = __webpack_require__(38);
 const typeorm_1 = __webpack_require__(8);
 const common_1 = __webpack_require__(10);
-const bcryptjs_1 = __webpack_require__(38);
+const bcryptjs_1 = __webpack_require__(39);
 const typeorm_2 = __webpack_require__(6);
 let AuthService = class AuthService {
     constructor(managerRepository, userRepository, jwtService) {
@@ -1810,25 +1882,25 @@ exports.AuthService = AuthService;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/jwt");
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = require("bcryptjs");
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = require("passport-local");
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1843,7 +1915,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const passport_jwt_1 = __webpack_require__(34);
+const passport_jwt_1 = __webpack_require__(35);
 const passport_1 = __webpack_require__(13);
 const common_1 = __webpack_require__(10);
 let ManageJwtStrategy = class ManageJwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy, 'manage-jwt') {
@@ -1867,7 +1939,7 @@ exports.ManageJwtStrategy = ManageJwtStrategy;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1882,8 +1954,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const auth_service_1 = __webpack_require__(36);
-const passport_local_1 = __webpack_require__(39);
+const auth_service_1 = __webpack_require__(37);
+const passport_local_1 = __webpack_require__(40);
 const passport_1 = __webpack_require__(13);
 const common_1 = __webpack_require__(10);
 let ManageLocalStrategy = class ManageLocalStrategy extends passport_1.PassportStrategy(passport_local_1.Strategy, 'manage-local') {
@@ -1906,7 +1978,7 @@ exports.ManageLocalStrategy = ManageLocalStrategy;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1935,10 +2007,10 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const auth_service_1 = __webpack_require__(36);
-const create_manager_dto_1 = __webpack_require__(43);
-const login_manager_dto_1 = __webpack_require__(44);
-const manager_service_1 = __webpack_require__(45);
+const auth_service_1 = __webpack_require__(37);
+const create_manager_dto_1 = __webpack_require__(44);
+const login_manager_dto_1 = __webpack_require__(45);
+const manager_service_1 = __webpack_require__(46);
 const common_1 = __webpack_require__(10);
 const swagger_1 = __webpack_require__(7);
 const passport_1 = __webpack_require__(13);
@@ -2019,7 +2091,7 @@ exports.UsersController = UsersController;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2058,7 +2130,7 @@ exports.CreateManagerDto = CreateManagerDto;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2099,7 +2171,7 @@ exports.LoginManagerDto = LoginManagerDto;
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2121,7 +2193,7 @@ const manager_entity_1 = __webpack_require__(27);
 const common_1 = __webpack_require__(10);
 const typeorm_1 = __webpack_require__(6);
 const typeorm_2 = __webpack_require__(8);
-const bcryptjs_1 = __webpack_require__(38);
+const bcryptjs_1 = __webpack_require__(39);
 let UsersService = class UsersService {
     constructor(managerRepository) {
         this.managerRepository = managerRepository;
@@ -2149,13 +2221,13 @@ exports.UsersService = UsersService;
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/config");
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2167,10 +2239,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const upload_config_1 = __webpack_require__(48);
-const upload_controller_1 = __webpack_require__(52);
+const upload_config_1 = __webpack_require__(49);
+const upload_controller_1 = __webpack_require__(53);
 const common_1 = __webpack_require__(10);
-const upload_service_1 = __webpack_require__(53);
+const upload_service_1 = __webpack_require__(54);
 let UploadModule = class UploadModule {
 };
 UploadModule = __decorate([
@@ -2184,15 +2256,15 @@ exports.UploadModule = UploadModule;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const platform_express_1 = __webpack_require__(49);
-const multer_1 = __webpack_require__(50);
-const fs = __webpack_require__(51);
+const platform_express_1 = __webpack_require__(50);
+const multer_1 = __webpack_require__(51);
+const fs = __webpack_require__(52);
 const common_1 = __webpack_require__(10);
 exports.uploadGlobalConfig = platform_express_1.MulterModule.registerAsync({
     useFactory: () => ({
@@ -2269,25 +2341,25 @@ exports.catalogVerification = {
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/platform-express");
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = require("multer");
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2305,8 +2377,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const upload_config_1 = __webpack_require__(48);
-const platform_express_1 = __webpack_require__(49);
+const upload_config_1 = __webpack_require__(49);
+const platform_express_1 = __webpack_require__(50);
 const common_1 = __webpack_require__(10);
 const swagger_1 = __webpack_require__(7);
 const passport_1 = __webpack_require__(13);
@@ -2365,7 +2437,7 @@ exports.UploadController = UploadController;
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2387,7 +2459,7 @@ exports.UploadService = UploadService;
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2399,25 +2471,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const app_entity_1 = __webpack_require__(30);
+const app_service_1 = __webpack_require__(58);
 const manager_entity_1 = __webpack_require__(27);
 const typeorm_1 = __webpack_require__(8);
 const common_1 = __webpack_require__(10);
-const site_controller_1 = __webpack_require__(55);
-const site_service_1 = __webpack_require__(56);
+const site_controller_1 = __webpack_require__(56);
+const site_service_1 = __webpack_require__(57);
 let SiteModule = class SiteModule {
 };
 SiteModule = __decorate([
     common_1.Module({
-        imports: [typeorm_1.TypeOrmModule.forFeature([manager_entity_1.Manager])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([manager_entity_1.Manager, app_entity_1.App])],
         controllers: [site_controller_1.SiteController],
-        providers: [site_service_1.SiteService]
+        providers: [site_service_1.SiteService, app_service_1.AppService]
     })
 ], SiteModule);
 exports.SiteModule = SiteModule;
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2431,16 +2505,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const app_entity_1 = __webpack_require__(30);
+const app_service_1 = __webpack_require__(58);
 const roles_guard_1 = __webpack_require__(21);
 const passport_1 = __webpack_require__(13);
-const site_service_1 = __webpack_require__(56);
+const site_service_1 = __webpack_require__(57);
 const common_1 = __webpack_require__(10);
 const swagger_1 = __webpack_require__(7);
 const roles_decorator_1 = __webpack_require__(24);
 let SiteController = class SiteController {
-    constructor(siteService) {
+    constructor(siteService, appService) {
         this.siteService = siteService;
+        this.appService = appService;
     }
     async getAllManage() {
         const allManagers = await this.siteService.getAllManage();
@@ -2448,6 +2528,22 @@ let SiteController = class SiteController {
             code: 2000,
             message: '管理员查询成功！',
             result: allManagers
+        };
+    }
+    async getAppInfo() {
+        const appInfo = await this.appService.getAppInfo();
+        return {
+            code: 2000,
+            message: 'app版本信息获取成功',
+            result: appInfo
+        };
+    }
+    async setAppInfo(app) {
+        const appInfo = await this.appService.setAppInfo(app);
+        return {
+            code: 2000,
+            message: 'app版本信息修改成功',
+            result: appInfo
         };
     }
 };
@@ -2458,19 +2554,35 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], SiteController.prototype, "getAllManage", null);
+__decorate([
+    common_1.Get('/app'),
+    swagger_1.ApiOperation({ summary: '获取app版本信息' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], SiteController.prototype, "getAppInfo", null);
+__decorate([
+    common_1.Put('/app'),
+    swagger_1.ApiOperation({ summary: '修改app版本信息' }),
+    __param(0, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [app_entity_1.App]),
+    __metadata("design:returntype", Promise)
+], SiteController.prototype, "setAppInfo", null);
 SiteController = __decorate([
     common_1.Controller('site'),
     swagger_1.ApiTags('系统设置'),
     swagger_1.ApiBearerAuth(),
     roles_decorator_1.Roles('admin'),
     common_1.UseGuards(passport_1.AuthGuard('manage-jwt'), roles_guard_1.RolesGuard),
-    __metadata("design:paramtypes", [site_service_1.SiteService])
+    __metadata("design:paramtypes", [site_service_1.SiteService,
+        app_service_1.AppService])
 ], SiteController);
 exports.SiteController = SiteController;
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2506,6 +2618,55 @@ SiteService = __decorate([
     __metadata("design:paramtypes", [typeorm_2.Repository])
 ], SiteService);
 exports.SiteService = SiteService;
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const app_entity_1 = __webpack_require__(30);
+const typeorm_1 = __webpack_require__(8);
+const common_1 = __webpack_require__(10);
+const typeorm_2 = __webpack_require__(6);
+let AppService = class AppService {
+    constructor(appRepository) {
+        this.appRepository = appRepository;
+    }
+    async getAppInfo() {
+        const appid = '__UNI__BF91653';
+        return this.appRepository.findOne(appid);
+    }
+    async setAppInfo(app) {
+        const { appid, hot_url, pack_url, content, version } = app;
+        let appinfo = await this.appRepository.findOne(appid);
+        appinfo.hot_url = hot_url;
+        appinfo.pack_url = pack_url;
+        appinfo.content = content;
+        appinfo.version = version;
+        return await this.appRepository.save(appinfo);
+    }
+};
+AppService = __decorate([
+    common_1.Injectable(),
+    __param(0, typeorm_1.InjectRepository(app_entity_1.App)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
+], AppService);
+exports.AppService = AppService;
 
 
 /***/ })

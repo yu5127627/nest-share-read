@@ -1,3 +1,4 @@
+import { UpdateModule } from './update/update.module';
 import { CommonModule } from './../../../libs/common/src/common.module';
 import { DbModule } from './../../../libs/db/src/db.module';
 import { ConfigModule } from '@nestjs/config';
@@ -15,7 +16,8 @@ import { BookshopModule } from './bookshop/bookshop.module';
     DbModule,
     AuthModule,
     BookshopModule,
-    CommonModule
+    CommonModule,
+    UpdateModule
   ]
 })
 export class Application {}

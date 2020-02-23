@@ -15,7 +15,7 @@ const getStorage = key => {
 			}
 		});
 	}).catch(err=>{
-		return {[key]:null}
+		return null
 	})
 }
 

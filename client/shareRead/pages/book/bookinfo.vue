@@ -63,7 +63,7 @@
 			</view>
 		</view>
 		<view class="progress-box" v-if="progress.isShow">
-			<progress :percent="progress.percent" show-info stroke-width="3" active />
+			<progress :percent="progress.percent" show-info stroke-width="3" active active-mode="forwards" />
 		</view>
 		<view class="comment">
 			<view class="comment-title">
@@ -88,8 +88,8 @@
 		<view class="fixed-module">
 			<view class="add-book">
 				<view class="icon"></view>
-				<view class="text">
-					加入书架
+				<view class="text" v-if="alreadDownLoad">
+					已加入书架
 				</view>
 			</view>
 			<view class="down-book">
@@ -99,7 +99,7 @@
 			</view>
 			<view class="add-book">
 				<view class="icon"></view>
-				<view class="text">
+				<view class="text" @click="handleSetStorage()">
 					加入书架
 				</view>
 			</view>
@@ -108,6 +108,9 @@
 </template>
 
 <script>
+	import {
+		getStorage
+	} from '../../common/utils.js';
 	export default {
 		data() {
 			return {
@@ -117,9 +120,30 @@
 					percent: 0,
 					isShow: false
 				},
+				alreadDownLoad: false,
 				savedFilePath: null,
-				currentBook: null
+				currentBook: null,
+				downloadTask: null
 			};
+		},
+		onBackPress(event) {
+			if (event.from === 'backbutton' && this.progress.isShow) {
+				uni.showModal({
+					title: '提示',
+					content: '退出当前页面将取消下载，是否继续？',
+					success: res => {
+						if (res.confirm) {
+							plus.downloader.clear();
+							uni.navigateBack({
+								delta: 1,
+							})
+						} else if (res.cancel) {
+							console.log('用户点击取消');
+						}
+					}
+				});
+				return true
+			}
 		},
 		methods: {
 			handleShowModal() {
@@ -141,14 +165,23 @@
 				});
 			},
 			handleSetStorage() {
-				let newBooks = [];
-				newBooks.push(this.currentBook)
-				console.log(JSON.stringify(newBooks))
+				let Books = [];
+				const books = uni.getStorageSync('books');
+				// 如果缓存中已有图书信息  则取出合并
+				if (books) {
+					const jsonBooks = JSON.parse(books)
+					for (let item of jsonBooks) {
+						Books.push(item)
+					}
+				}
+				// 将当前书籍信息录入
+				Books.push(this.currentBook)
+				console.log(JSON.stringify(Books))
+				// 再次添加到缓存
 				uni.setStorage({
 					key: 'books',
-					data: JSON.stringify(newBooks),
+					data: JSON.stringify(Books),
 					success: (res) => {
-						console.log(JSON.stringify(res))
 						this.handleShowModal()
 					},
 					fail: (err) => {
@@ -158,7 +191,7 @@
 			},
 			handleDownload(url) {
 				this.progress.isShow = true;
-				const downloadTask = uni.downloadFile({
+				this.downloadTask = uni.downloadFile({
 					url: this.apiUrl + url,
 					success: res => {
 						if (res.statusCode === 200) {
@@ -184,23 +217,27 @@
 					}
 				});
 
-				downloadTask.onProgressUpdate((res) => {
+				this.downloadTask.onProgressUpdate((res) => {
 					this.progress.percent = res.progress
 					// console.log('下载进度' + res.progress);
 					// console.log('已经下载的数据长度' + res.totalBytesWritten);
 					// console.log('预期需要下载的数据总长度' + res.totalBytesExpectedToWrite);
-
-					// // 测试条件，取消下载任务。
-					// if (res.progress == 100) {
-					// 	this.handleSetStorage()
-					// }
 				});
 			},
 			async getBook(id) {
 				const {
 					result
 				} = await this.$api.bookshop.book(id);
-				this.book = result
+				this.book = result;
+				const books = uni.getStorageSync('books');
+				if (books) {
+					const jsonBooks = JSON.parse(books)
+					for (let item of jsonBooks) {
+						if (item.id == result.id) {
+							this.alreadDownLoad = true;
+						}
+					}
+				}
 			}
 		},
 		onLoad(op) {

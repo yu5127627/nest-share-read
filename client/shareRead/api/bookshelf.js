@@ -1,14 +1,14 @@
 import http from './http'
 
 // 搜索
-const login = (data) => {
+const isUpdate = (data) => {
     return http({
-        url: 'users/login',
-        method: 'put', 
+        url: 'update',
+        method: 'post', 
         data,
     })
 }
 
 export default {
-	login
+	isUpdate
 }

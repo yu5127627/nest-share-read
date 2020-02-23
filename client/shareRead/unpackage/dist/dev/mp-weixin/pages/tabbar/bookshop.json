@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "书城",
-  "usingComponents": {
-    "wuc-tab": "/components/wuc-tab/wuc-tab",
-    "uni-swiper-dot": "/components/uni-swiper-dot/uni-swiper-dot"
-  }
-}
