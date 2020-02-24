@@ -181,6 +181,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const actions_entity_1 = __webpack_require__(26);
 const book_entity_1 = __webpack_require__(9);
 const typeorm_1 = __webpack_require__(5);
 const books_service_1 = __webpack_require__(11);
@@ -190,7 +191,7 @@ let BooksModule = class BooksModule {
 };
 BooksModule = __decorate([
     common_1.Module({
-        imports: [typeorm_1.TypeOrmModule.forFeature([book_entity_1.Book])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([book_entity_1.Book, actions_entity_1.Actions])],
         controllers: [books_controller_1.BooksController],
         providers: [books_service_1.BooksService]
     })
@@ -345,6 +346,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const actions_entity_1 = __webpack_require__(26);
 const category_entity_1 = __webpack_require__(7);
 const typeorm_1 = __webpack_require__(8);
 const swagger_1 = __webpack_require__(10);
@@ -477,6 +479,11 @@ __decorate([
     typeorm_1.ManyToOne(type => category_entity_1.Category, category => category.book),
     __metadata("design:type", category_entity_1.Category)
 ], Book.prototype, "category", void 0);
+__decorate([
+    typeorm_1.OneToOne(type => actions_entity_1.Actions),
+    typeorm_1.JoinColumn(),
+    __metadata("design:type", actions_entity_1.Actions)
+], Book.prototype, "actions", void 0);
 Book = __decorate([
     typeorm_1.Entity()
 ], Book);
@@ -509,12 +516,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const book_entity_1 = __webpack_require__(9);
+const actions_entity_1 = __webpack_require__(26);
 const common_1 = __webpack_require__(6);
 const crud_typeorm_1 = __webpack_require__(12);
 const typeorm_1 = __webpack_require__(5);
+const typeorm_2 = __webpack_require__(8);
 let BooksService = class BooksService extends crud_typeorm_1.TypeOrmCrudService {
-    constructor(repo) {
+    constructor(repo, actionsRepository) {
         super(repo);
+        this.actionsRepository = actionsRepository;
     }
     async deleteManyBooks(idArr) {
         const category = await this.repo.findByIds(idArr);
@@ -527,11 +537,16 @@ let BooksService = class BooksService extends crud_typeorm_1.TypeOrmCrudService 
             return { code: 2004, message: '删除失败，请稍后重试！' };
         });
     }
+    async createOne(createBooksDto) {
+        createBooksDto.actions = await this.actionsRepository.save({});
+        return await this.repo.save(createBooksDto);
+    }
 };
 BooksService = __decorate([
     common_1.Injectable(),
     __param(0, typeorm_1.InjectRepository(book_entity_1.Book)),
-    __metadata("design:paramtypes", [Object])
+    __param(1, typeorm_1.InjectRepository(actions_entity_1.Actions)),
+    __metadata("design:paramtypes", [Object, typeorm_2.Repository])
 ], BooksService);
 exports.BooksService = BooksService;
 
@@ -563,7 +578,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport_1 = __webpack_require__(14);
 const replace_books_dto_1 = __webpack_require__(15);
-const update_books_dto_1 = __webpack_require__(17);
 const create_books_dto_1 = __webpack_require__(18);
 const books_service_1 = __webpack_require__(11);
 const book_entity_1 = __webpack_require__(9);
@@ -577,6 +591,14 @@ let BooksController = class BooksController {
     async deleteManyBooks(idArr) {
         return await this.service.deleteManyBooks(idArr);
     }
+    async createOne(createBooksDto) {
+        const book = await this.service.createOne(createBooksDto);
+        return {
+            code: 2000,
+            message: '新增图书成功',
+            result: book
+        };
+    }
 };
 __decorate([
     common_1.Delete(),
@@ -586,6 +608,13 @@ __decorate([
     __metadata("design:paramtypes", [Array]),
     __metadata("design:returntype", Promise)
 ], BooksController.prototype, "deleteManyBooks", null);
+__decorate([
+    crud_1.Override(),
+    __param(0, crud_1.ParsedBody()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_books_dto_1.CreateBooksDto]),
+    __metadata("design:returntype", Promise)
+], BooksController.prototype, "createOne", null);
 BooksController = __decorate([
     crud_1.Crud({
         model: {
@@ -593,11 +622,10 @@ BooksController = __decorate([
         },
         dto: {
             create: create_books_dto_1.CreateBooksDto,
-            update: update_books_dto_1.UpdateBooksDto,
             replace: replace_books_dto_1.ReplaceBooksDto
         },
         routes: {
-            exclude: ['updateOneBase']
+            exclude: ['updateOneBase', 'createManyBase']
         },
         query: {
             maxLimit: 100,
@@ -605,7 +633,10 @@ BooksController = __decorate([
                 category: {
                     eager: true,
                     persist: ['zh_name'],
-                    exclude: ['id', 'en_name']
+                    exclude: ['en_name']
+                },
+                actions: {
+                    eager: true
                 }
             }
         }
@@ -665,7 +696,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '图书',
         required: true,
-        example: 'upload/images/covers/1580830233290.png'
+        example: '\\upload\\images\\covers\\1580830233290.png'
     }),
     class_validator_1.IsNotEmpty({ message: '请上传要替换的图书' }),
     __metadata("design:type", String)
@@ -674,7 +705,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '图书封面',
         required: true,
-        example: 'upload/images/covers/1580830233290.png'
+        example: '\\upload\\images\\covers\\1580830233290.png'
     }),
     class_validator_1.IsNotEmpty({ message: '请添加此书封面图' }),
     __metadata("design:type", String)
@@ -682,7 +713,8 @@ __decorate([
 __decorate([
     swagger_1.ApiProperty({
         description: '图书概述',
-        required: true
+        required: true,
+        example: '这是修改后的图书描述'
     }),
     class_validator_1.IsNotEmpty({ message: '请位本书添加描述' }),
     __metadata("design:type", String)
@@ -690,7 +722,8 @@ __decorate([
 __decorate([
     swagger_1.ApiProperty({
         description: '图书特点',
-        required: false
+        required: false,
+        example: '这是修改后的图书特点'
     }),
     class_validator_1.IsNotEmpty({ message: '请添加此书封面图' }),
     __metadata("design:type", String)
@@ -699,7 +732,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '出版日期',
         required: true,
-        example: '1579508386'
+        example: 1581350400000
     }),
     class_validator_1.IsNotEmpty({ message: '请添加出版日期' }),
     __metadata("design:type", String)
@@ -708,7 +741,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '图书总页数',
         required: true,
-        example: '1200'
+        example: 1200
     }),
     class_validator_1.IsNotEmpty({ message: '请添加图书总页数' }),
     __metadata("design:type", Number)
@@ -717,7 +750,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '目录截图',
         required: true,
-        example: ["upload/images/catalog/1580830233343.png", "upload/images/catalog/1580830233345.png"]
+        example: '["upload/images/catalog/1580830233343.png","upload/images/catalog/1580830233345.png"]'
     }),
     class_validator_1.IsNotEmpty({ message: '请添加书籍目录照片' }),
     __metadata("design:type", String)
@@ -750,126 +783,7 @@ exports.ReplaceBooksDto = ReplaceBooksDto;
 module.exports = require("class-validator");
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const category_entity_1 = __webpack_require__(7);
-const swagger_1 = __webpack_require__(10);
-const class_validator_1 = __webpack_require__(16);
-const typeorm_1 = __webpack_require__(8);
-class UpdateBooksDto {
-}
-__decorate([
-    swagger_1.ApiProperty({
-        description: '中文名称',
-        required: false,
-        example: 'vue.js深入浅出'
-    }),
-    class_validator_1.IsNotEmpty({ message: '请输入中文书名' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "zh_name", void 0);
-__decorate([
-    swagger_1.ApiProperty({ description: '英文名称', required: false, example: 'vue.js' }),
-    class_validator_1.IsNotEmpty({ message: '请输入英文书名' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "en_name", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '图书',
-        required: true,
-        example: 'https://file.ituring.com.cn/SmallCover/19079fff942994b2fff5'
-    }),
-    class_validator_1.IsNotEmpty({ message: '请上传要替换的图书' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "book", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '图书封面',
-        required: false,
-        example: 'upload/images/covers/1580830233290.png'
-    }),
-    class_validator_1.IsNotEmpty({ message: '请添加此书封面图' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "cover", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '图书概述',
-        required: false
-    }),
-    class_validator_1.IsNotEmpty({ message: '请位本书添加描述' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "description", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '图书特点',
-        required: false
-    }),
-    class_validator_1.IsNotEmpty({ message: '请添加此书封面图' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "feature", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '出版日期',
-        required: false,
-        example: '1579508386'
-    }),
-    class_validator_1.IsNotEmpty({ message: '请添加出版日期' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "create_time", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '图书总页数',
-        required: false,
-        example: '1200'
-    }),
-    class_validator_1.IsNotEmpty({ message: '请添加图书总页数' }),
-    __metadata("design:type", Number)
-], UpdateBooksDto.prototype, "total_page", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '目录截图',
-        required: false,
-        example: [
-            'upload/images/catalog/1580830233343.png',
-            'upload/images/catalog/1580830233345.png'
-        ]
-    }),
-    class_validator_1.IsNotEmpty({ message: '请添加书籍目录照片' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "catalog", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '关于作者',
-        required: false
-    }),
-    class_validator_1.IsNotEmpty({ message: '为作者做些介绍' }),
-    __metadata("design:type", String)
-], UpdateBooksDto.prototype, "about_author", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '所属类别id',
-        required: true,
-        example: 3
-    }),
-    typeorm_1.ManyToOne(type => category_entity_1.Category, category => category.book),
-    __metadata("design:type", Array)
-], UpdateBooksDto.prototype, "category", void 0);
-exports.UpdateBooksDto = UpdateBooksDto;
-
-
-/***/ }),
+/* 17 */,
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -909,7 +823,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '图书',
         required: true,
-        example: 'upload/images/covers/1580830233290.png'
+        example: '\\upload\\images\\covers\\1580830233290.png'
     }),
     class_validator_1.IsNotEmpty({ message: '请上传图书' }),
     __metadata("design:type", String)
@@ -918,7 +832,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '图书封面',
         required: true,
-        example: 'upload/images/covers/1580830233290.png'
+        example: '\\upload\\images\\covers\\1580830233290.png'
     }),
     class_validator_1.IsNotEmpty({ message: '请添加此书封面图' }),
     __metadata("design:type", String)
@@ -926,7 +840,8 @@ __decorate([
 __decorate([
     swagger_1.ApiProperty({
         description: '图书概述',
-        required: true
+        required: true,
+        example: '这是图书概述'
     }),
     class_validator_1.IsNotEmpty({ message: '请位本书添加描述' }),
     __metadata("design:type", String)
@@ -934,7 +849,8 @@ __decorate([
 __decorate([
     swagger_1.ApiProperty({
         description: '图书特点',
-        required: false
+        required: false,
+        example: '这是图书特点'
     }),
     class_validator_1.IsNotEmpty({ message: '请添加此书特点' }),
     __metadata("design:type", String)
@@ -943,7 +859,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '出版日期',
         required: true,
-        example: '1579508386'
+        example: 1581350400000
     }),
     class_validator_1.IsNotEmpty({ message: '请添加出版日期' }),
     __metadata("design:type", String)
@@ -952,7 +868,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '图书总页数',
         required: true,
-        example: '1200'
+        example: 1200
     }),
     class_validator_1.IsNotEmpty({ message: '请添加图书总页数' }),
     __metadata("design:type", Number)
@@ -961,10 +877,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '目录截图',
         required: true,
-        example: [
-            'upload\\images\\catalog\\1580830233343.png',
-            'upload\\images\\catalog\\1580830233345.png'
-        ]
+        example: "['upload\\images\\catalog\\1580830233343.png','upload\\images\\catalog\\1580830233345.png']"
     }),
     class_validator_1.IsNotEmpty({ message: '请添加书籍目录照片' }),
     __metadata("design:type", String)
@@ -982,7 +895,7 @@ __decorate([
     swagger_1.ApiProperty({
         description: '所属类别id',
         required: true,
-        example: 3
+        example: 4
     }),
     typeorm_1.ManyToOne(type => category_entity_1.Category, category => category.book),
     __metadata("design:type", Array)
@@ -1239,6 +1152,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const actions_entity_1 = __webpack_require__(26);
 const user_entity_1 = __webpack_require__(27);
 const manager_entity_1 = __webpack_require__(28);
 const book_entity_1 = __webpack_require__(9);
@@ -1261,7 +1175,7 @@ DbModule = __decorate([
                     username: process.env.DB_NAME,
                     password: process.env.DB_PASSWORD,
                     database: process.env.DB_DATABASE,
-                    entities: [category_entity_1.Category, book_entity_1.Book, manager_entity_1.Manager, user_entity_1.User, email_entity_1.Email, app_entity_1.App],
+                    entities: [category_entity_1.Category, book_entity_1.Book, manager_entity_1.Manager, user_entity_1.User, email_entity_1.Email, app_entity_1.App, actions_entity_1.Actions],
                     synchronize: true
                 })
             })
@@ -1274,7 +1188,47 @@ exports.DbModule = DbModule;
 
 
 /***/ }),
-/* 26 */,
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeorm_1 = __webpack_require__(8);
+let Actions = class Actions {
+};
+__decorate([
+    typeorm_1.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], Actions.prototype, "id", void 0);
+__decorate([
+    typeorm_1.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Actions.prototype, "down_count", void 0);
+__decorate([
+    typeorm_1.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Actions.prototype, "browse_count", void 0);
+__decorate([
+    typeorm_1.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Actions.prototype, "fav_count", void 0);
+Actions = __decorate([
+    typeorm_1.Entity()
+], Actions);
+exports.Actions = Actions;
+
+
+/***/ }),
 /* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 

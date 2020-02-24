@@ -19,7 +19,7 @@ export class CreateBooksDto {
   @ApiProperty({
     description: '图书',
     required: true,
-    example: 'upload/images/covers/1580830233290.png'
+    example: '\\upload\\images\\covers\\1580830233290.png'
   })
   @IsNotEmpty({ message: '请上传图书' })
   book: string; //图书
@@ -27,21 +27,23 @@ export class CreateBooksDto {
   @ApiProperty({
     description: '图书封面',
     required: true,
-    example: 'upload/images/covers/1580830233290.png'
+    example: '\\upload\\images\\covers\\1580830233290.png'
   })
   @IsNotEmpty({ message: '请添加此书封面图' })
   cover: string; //封面
 
   @ApiProperty({
     description: '图书概述',
-    required: true
+    required: true,
+    example: '这是图书概述'
   })
   @IsNotEmpty({ message: '请位本书添加描述' })
   description: string; //描述
 
   @ApiProperty({
     description: '图书特点',
-    required: false
+    required: false,
+    example: '这是图书特点'
   })
   @IsNotEmpty({ message: '请添加此书特点' })
   feature?: string; //特点
@@ -49,7 +51,7 @@ export class CreateBooksDto {
   @ApiProperty({
     description: '出版日期',
     required: true,
-    example: '1579508386'
+    example: 1581350400000
   })
   @IsNotEmpty({ message: '请添加出版日期' })
   create_time: string; //出版日期
@@ -57,7 +59,7 @@ export class CreateBooksDto {
   @ApiProperty({
     description: '图书总页数',
     required: true,
-    example: '1200'
+    example: 1200
   })
   @IsNotEmpty({ message: '请添加图书总页数' })
   total_page: number; //总页数
@@ -65,10 +67,8 @@ export class CreateBooksDto {
   @ApiProperty({
     description: '目录截图',
     required: true,
-    example: [
-      'upload\\images\\catalog\\1580830233343.png',
-      'upload\\images\\catalog\\1580830233345.png'
-    ]
+    example:
+      "['upload\\images\\catalog\\1580830233343.png','upload\\images\\catalog\\1580830233345.png']"
   })
   @IsNotEmpty({ message: '请添加书籍目录照片' })
   catalog: string; //目录照片
@@ -85,7 +85,7 @@ export class CreateBooksDto {
   @ApiProperty({
     description: '所属类别id',
     required: true,
-    example: 3
+    example: 4
   })
   @ManyToOne(
     type => Category,

@@ -1,5 +1,13 @@
+import { Actions } from './actions.entity';
 import { Category } from './category.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToOne,
+  JoinColumn
+} from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
@@ -119,4 +127,8 @@ export class Book {
     category => category.book
   )
   category: Category;
+
+  @OneToOne(type => Actions)
+  @JoinColumn()
+  actions: Actions;
 }

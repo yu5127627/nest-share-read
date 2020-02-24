@@ -598,6 +598,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const actions_entity_1 = __webpack_require__(48);
 const user_entity_1 = __webpack_require__(17);
 const manager_entity_1 = __webpack_require__(18);
 const book_entity_1 = __webpack_require__(19);
@@ -620,7 +621,7 @@ DbModule = __decorate([
                     username: process.env.DB_NAME,
                     password: process.env.DB_PASSWORD,
                     database: process.env.DB_DATABASE,
-                    entities: [category_entity_1.Category, book_entity_1.Book, manager_entity_1.Manager, user_entity_1.User, email_entity_1.Email, app_entity_1.App],
+                    entities: [category_entity_1.Category, book_entity_1.Book, manager_entity_1.Manager, user_entity_1.User, email_entity_1.Email, app_entity_1.App, actions_entity_1.Actions],
                     synchronize: true
                 })
             })
@@ -820,6 +821,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const actions_entity_1 = __webpack_require__(48);
 const category_entity_1 = __webpack_require__(20);
 const typeorm_1 = __webpack_require__(10);
 const swagger_1 = __webpack_require__(2);
@@ -952,6 +954,11 @@ __decorate([
     typeorm_1.ManyToOne(type => category_entity_1.Category, category => category.book),
     __metadata("design:type", category_entity_1.Category)
 ], Book.prototype, "category", void 0);
+__decorate([
+    typeorm_1.OneToOne(type => actions_entity_1.Actions),
+    typeorm_1.JoinColumn(),
+    __metadata("design:type", actions_entity_1.Actions)
+], Book.prototype, "actions", void 0);
 Book = __decorate([
     typeorm_1.Entity()
 ], Book);
@@ -2126,6 +2133,47 @@ BookshopService = __decorate([
         typeorm_2.Repository])
 ], BookshopService);
 exports.BookshopService = BookshopService;
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeorm_1 = __webpack_require__(10);
+let Actions = class Actions {
+};
+__decorate([
+    typeorm_1.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], Actions.prototype, "id", void 0);
+__decorate([
+    typeorm_1.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Actions.prototype, "down_count", void 0);
+__decorate([
+    typeorm_1.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Actions.prototype, "browse_count", void 0);
+__decorate([
+    typeorm_1.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Actions.prototype, "fav_count", void 0);
+Actions = __decorate([
+    typeorm_1.Entity()
+], Actions);
+exports.Actions = Actions;
 
 
 /***/ })
