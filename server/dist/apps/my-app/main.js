@@ -922,7 +922,7 @@ __decorate([
         required: true,
         example: 1
     }),
-    typeorm_1.Column(),
+    typeorm_1.Column({ default: 0 }),
     __metadata("design:type", Number)
 ], Book.prototype, "is_hot", void 0);
 __decorate([
@@ -931,7 +931,7 @@ __decorate([
         required: true,
         example: 1
     }),
-    typeorm_1.Column(),
+    typeorm_1.Column({ default: 0 }),
     __metadata("design:type", Number)
 ], Book.prototype, "is_recommend", void 0);
 __decorate([
@@ -940,7 +940,7 @@ __decorate([
         required: true,
         example: 1
     }),
-    typeorm_1.Column(),
+    typeorm_1.Column({ default: 0 }),
     __metadata("design:type", Number)
 ], Book.prototype, "is_new", void 0);
 __decorate([
@@ -950,7 +950,7 @@ __decorate([
         example: 3
     }),
     typeorm_1.ManyToOne(type => category_entity_1.Category, category => category.book),
-    __metadata("design:type", Array)
+    __metadata("design:type", category_entity_1.Category)
 ], Book.prototype, "category", void 0);
 Book = __decorate([
     typeorm_1.Entity()
@@ -992,8 +992,7 @@ __decorate([
 ], Category.prototype, "en_name", void 0);
 __decorate([
     typeorm_1.OneToMany(type => book_entity_1.Book, book => book.category),
-    typeorm_1.JoinColumn(),
-    __metadata("design:type", book_entity_1.Book)
+    __metadata("design:type", Array)
 ], Category.prototype, "book", void 0);
 Category = __decorate([
     typeorm_1.Entity()

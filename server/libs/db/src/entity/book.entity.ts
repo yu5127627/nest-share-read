@@ -90,7 +90,7 @@ export class Book {
     required: true,
     example: 1
   })
-  @Column()
+  @Column({ default: 0 })
   is_hot: number;
 
   @ApiProperty({
@@ -98,7 +98,7 @@ export class Book {
     required: true,
     example: 1
   })
-  @Column()
+  @Column({ default: 0 })
   is_recommend: number;
 
   @ApiProperty({
@@ -106,7 +106,7 @@ export class Book {
     required: true,
     example: 1
   })
-  @Column()
+  @Column({ default: 0 })
   is_new: number;
 
   @ApiProperty({
@@ -118,5 +118,5 @@ export class Book {
     type => Category,
     category => category.book
   )
-  category: Category[];
+  category: Category;
 }

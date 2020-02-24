@@ -91,7 +91,10 @@
 				})
 			},
 			getUserinfo(){
-				this.userinfo = JSON.parse(uni.getStorageSync('user'));
+				const userinfo = uni.getStorageSync('user');
+				if(userinfo){
+					this.userinfo = JSON.parse(userinfo);
+				}
 			}
 		},
 		onLoad() {

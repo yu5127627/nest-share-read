@@ -1,5 +1,5 @@
 <template>
-	<view class="book-info">
+	<view class="book-info" v-if="book">
 		<view class="book-box">
 			<view class="book-cover">
 				<image :src="apiUrl+book.cover" mode=""></image>
@@ -16,7 +16,7 @@
 					3892人
 				</view>
 				<view class="name">
-					点赞
+					浏览
 				</view>
 			</view>
 			<view class="item">
@@ -24,7 +24,7 @@
 					3892人
 				</view>
 				<view class="name">
-					点赞
+					下载
 				</view>
 			</view>
 			<view class="item">
@@ -32,7 +32,7 @@
 					3892人
 				</view>
 				<view class="name">
-					点赞
+					收藏
 				</view>
 			</view>
 		</view>
@@ -210,6 +210,7 @@
 										cover,
 										zh_name
 									}
+									this.progress.isShow = false;
 									this.handleSetStorage()
 								}
 							});

@@ -31,9 +31,9 @@
 					confirmColor: '#3CC51F',
 					isUpdate: false,
 					updateUrl: null,
-					tabMask:null
+					tabMask: null
 				},
-				updateMask:false,
+				updateMask: false,
 				apiUrl: getApp().globalData.api,
 				saveBooks: null,
 				newBooks: null,
@@ -57,29 +57,14 @@
 			nkActionSheet
 		},
 		methods: {
-			hadnleCancel(){
-				this.updateMask =false;
+			hadnleCancel() {
+				this.updateMask = false;
 				this.update.tabMask.hide();
 			},
 			handleConfirm() {
 				switch (this.update.isUpdate) {
 					case 1: // 热更新
-						uni.downloadFile({
-							url: this.update.updateUrl,
-							success: (downloadResult) => {
-								// console.log(JSON.stringify(downloadResult));
-								if (downloadResult.statusCode === 200) {
-									plus.runtime.install(downloadResult.tempFilePath, {
-										force: false
-									}, function() {
-										// console.log('install success...');
-										plus.runtime.restart();
-									}, function(e) {
-										console.error('install fail...');
-									});
-								}
-							}
-						})
+						this.hotUpdate();
 						break;
 					case 2: // 整包更新
 						plus.runtime.openURL(this.update.updateUrl);
@@ -88,6 +73,26 @@
 						plus.runtime.openURL(this.update.updateUrl);
 						break;
 				}
+			},
+			hotUpdate() {
+				uni.downloadFile({
+					url: this.update.updateUrl,
+					success: (downloadResult) => {
+						console.log(JSON.stringify(downloadResult))
+
+						if (downloadResult.statusCode === 200) {
+							plus.runtime.install(downloadResult.tempFilePath, {
+								force: true
+							}, function() {
+								console.log('install success...');
+								plus.runtime.restart();
+							}, function(e) {
+								console.log(e)
+								console.error('install fail...');
+							});
+						} 
+					}
+				});
 			},
 			resetData() {
 				this.nkAction.show = false;
@@ -133,18 +138,14 @@
 				}
 			},
 			async isUpdate() {
-				// const appInfo = { //升级检测数据  
-				// 	"appid": plus.runtime.appid,
-				// 	"version": plus.runtime.version
-				// };
-				const appInfo = { //升级检测数据
-					"appid": '__UNI__BF91653',
-					"version": '1.0.0'
+				const appInfo = { //升级检测数据  
+					"appid": plus.runtime.appid,
+					"version": plus.runtime.version
 				};
 				let {
 					result
 				} = await this.$api.bookshelf.isUpdate(appInfo);
-
+				console.log(JSON.stringify(result))
 				if (result.isUpdate !== 0) {
 					this.update.isUpdate = result.isUpdate;
 					this.update.content = result.content;
