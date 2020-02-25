@@ -6,9 +6,14 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { AuthModule } from '@app/auth';
 import { Email } from '@app/db/entity/email.entity';
+import { UserActions } from '@app/db/entity/user-actions.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User,Email]), AuthModule, CommonModule],
+  imports: [
+    TypeOrmModule.forFeature([User, Email, UserActions]),
+    AuthModule,
+    CommonModule
+  ],
   controllers: [UserController],
   providers: [UserService]
 })

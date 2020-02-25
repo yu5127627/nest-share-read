@@ -1,5 +1,5 @@
 import { Book } from '@app/db/entity/book.entity';
-import { Actions } from './../../../../libs/db/src/entity/actions.entity';
+import { BookActions } from '../../../../libs/db/src/entity/book-actions.entity';
 import { Client } from '@app/common/interface/client.interface';
 import { Injectable } from '@nestjs/common';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
@@ -10,8 +10,8 @@ import { Repository } from 'typeorm';
 export class BooksService extends TypeOrmCrudService<Book> {
   constructor(
     @InjectRepository(Book) repo,
-    @InjectRepository(Actions)
-    private readonly actionsRepository: Repository<Actions>
+    @InjectRepository(BookActions)
+    private readonly bookActionsRepository: Repository<BookActions>
   ) {
     super(repo);
   }
@@ -29,7 +29,7 @@ export class BooksService extends TypeOrmCrudService<Book> {
   }
 
   async createOne(createBooksDto): Promise<Book> {
-    createBooksDto.actions = await this.actionsRepository.save({});
+    createBooksDto.bookActions = await this.bookActionsRepository.save({});
     return await this.repo.save(createBooksDto);
   }
 }

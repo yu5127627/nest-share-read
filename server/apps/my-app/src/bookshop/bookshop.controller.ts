@@ -1,7 +1,8 @@
+import { AuthGuard } from '@nestjs/passport';
 import { BookshopService } from './bookshop.service';
 import { Client } from './../../../../libs/common/src/interface/client.interface';
-import { Controller, Get, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('bookshop')
 @ApiTags('书城')
@@ -39,5 +40,24 @@ export class BookshopController {
       message: '查询图书成功！',
       result: book
     };
+  }
+
+  @Get('book/down/:id')
+  @ApiOperation({ summary: '下载一本图书' })
+  async downBook(@Param('id') id: number): Promise<Client> {
+    await this.bookshopService.downBook(id);
+    return {
+      code: 2000,
+      message: '图书下载请求已提交！'
+    };
+  }
+
+  @Get('book/fav/:id')
+  @UseGuards(AuthGuard('myapp-jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '收藏一本图书' })
+  async favBook(@Request() req, @Param('id') id: number): Promise<Client> {
+    const userId = req.user.id;
+    return await this.bookshopService.favBook(id, userId);
   }
 }

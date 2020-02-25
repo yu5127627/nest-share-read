@@ -20,6 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document); // 设置路径
 
+  // 全局数据验证管道
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.MYAPP_PORT || 8001, () => {

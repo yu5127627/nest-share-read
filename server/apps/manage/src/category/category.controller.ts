@@ -1,4 +1,4 @@
-import { RolesGuard } from './../../../../libs/auth/src/roles.guard';
+import { RolesGuard } from '../../../../libs/auth/src/guard/roles.guard';
 import { Client } from '@app/common/interface/client.interface';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoryService } from './category.service';

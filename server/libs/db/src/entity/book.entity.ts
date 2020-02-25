@@ -1,4 +1,4 @@
-import { Actions } from './actions.entity';
+import { BookActions } from './book-actions.entity';
 import { Category } from './category.entity';
 import {
   Entity,
@@ -128,7 +128,13 @@ export class Book {
   )
   category: Category;
 
-  @OneToOne(type => Actions)
+  @OneToOne(
+    type => BookActions,
+    bookActions => bookActions.book,
+    {
+      cascade: true // 级联自动保存
+    }
+  )
   @JoinColumn()
-  actions: Actions;
+  bookActions: BookActions;
 }

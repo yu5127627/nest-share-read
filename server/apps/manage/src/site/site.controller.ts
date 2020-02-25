@@ -1,6 +1,6 @@
 import { App } from '@app/db/entity/app.entity';
 import { AppService } from './app.service';
-import { RolesGuard } from './../../../../libs/auth/src/roles.guard';
+import { RolesGuard } from '../../../../libs/auth/src/guard/roles.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { Client } from './../../../../libs/common/src/interface/client.interface';
 import { SiteService } from './site.service';

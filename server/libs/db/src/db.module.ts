@@ -1,4 +1,5 @@
-import { Actions } from './entity/actions.entity';
+import { UserActions } from './entity/user-actions.entity';
+import { BookActions } from './entity/book-actions.entity';
 import { User } from '@app/db/entity/user.entity';
 import { Manager } from './entity/manager.entity';
 import { Book } from './entity/book.entity';
@@ -19,7 +20,16 @@ import { App } from './entity/app.entity';
         username: process.env.DB_NAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
-        entities: [Category, Book, Manager, User, Email, App, Actions],
+        entities: [
+          Category,
+          Book,
+          Manager,
+          User,
+          Email,
+          App,
+          BookActions,
+          UserActions
+        ],
         synchronize: true
       })
     })

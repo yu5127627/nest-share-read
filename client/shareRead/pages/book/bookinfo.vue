@@ -13,7 +13,7 @@
 		<view class="book-statistics">
 			<view class="item">
 				<view class="count">
-					3892人
+					{{book.bookActions.browse_count}}次
 				</view>
 				<view class="name">
 					浏览
@@ -21,7 +21,7 @@
 			</view>
 			<view class="item">
 				<view class="count">
-					3892人
+					{{book.bookActions.down_count}}次
 				</view>
 				<view class="name">
 					下载
@@ -29,7 +29,7 @@
 			</view>
 			<view class="item">
 				<view class="count">
-					3892人
+					{{book.bookActions.fav_count}}人
 				</view>
 				<view class="name">
 					收藏
