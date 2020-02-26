@@ -10,7 +10,7 @@ import {
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class MyappRegisterCodePipe implements PipeTransform {
+export class MyappVerifyCodePipe implements PipeTransform {
   constructor(
     @InjectRepository(Email)
     private readonly emailRepository: Repository<Email>

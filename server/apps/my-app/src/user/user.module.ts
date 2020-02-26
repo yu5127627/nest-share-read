@@ -1,3 +1,4 @@
+import { Book } from '@app/db/entity/book.entity';
 import { CommonModule } from './../../../../libs/common/src/common.module';
 import { User } from '@app/db/entity/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,7 +11,7 @@ import { UserActions } from '@app/db/entity/user-actions.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Email, UserActions]),
+    TypeOrmModule.forFeature([User, Email, UserActions, Book]),
     AuthModule,
     CommonModule
   ],

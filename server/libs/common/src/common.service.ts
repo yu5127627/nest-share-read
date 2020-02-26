@@ -6,7 +6,7 @@ import { SentMessageInfo } from 'nodemailer/lib/smtp-connection';
 @Injectable()
 export class CommonService {
   sendEmail(sendEmailDto: SendEmailDto): Promise<SentMessageInfo> {
-    const { email, randomCode } = sendEmailDto;
+    const { email, content } = sendEmailDto;
     const transporter = createTransport({
       host: process.env.EMAIL_HOST,
       port: Number(process.env.EMAIL_PORT),
@@ -21,7 +21,7 @@ export class CommonService {
       from: process.env.EMAIL_USERNAME, // 发件人邮箱
       to: email, // 收件人地址，多个收件人可以使用逗号分隔
       subject: process.env.EMAIL_SUBJECT, // 邮件标题
-      html: `<h1>${process.env.EMAIL_SUBJECT}管理员致电!</h1><p style="font-size: 18px;color:#000;">尊敬的申请者您好，欢迎您注册图书管理系统，验证码为：<u style="font-size: 16px;color:#1890ff;">${randomCode}</u></p><p style="font-size: 14px;color:#ff0000;">验证码10分钟内有效</p>` // 邮件内容
+      html: content // 邮件内容
     };
 
     return new Promise((resolve, reject) => {

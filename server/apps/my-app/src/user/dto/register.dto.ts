@@ -4,8 +4,8 @@ import {  ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto extends User {
   @IsNotEmpty({ message: '请输入昵称' })
-  @MinLength(3, { message: '账号长度至少为3' })
-  @MaxLength(10, { message: '账号长度至多为10' })
+  @MinLength(3, { message: '呢称长度至少为3' })
+  @MaxLength(10, { message: '呢称长度至多为10' })
   readonly username: string;
 
   @IsEmail({ allow_display_name: true }, { message: '请输入正确的邮箱' })

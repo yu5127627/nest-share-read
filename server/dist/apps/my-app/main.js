@@ -150,11 +150,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const update_module_1 = __webpack_require__(5);
 const common_module_1 = __webpack_require__(13);
 const db_module_1 = __webpack_require__(16);
-const config_1 = __webpack_require__(24);
-const user_module_1 = __webpack_require__(25);
+const config_1 = __webpack_require__(25);
+const user_module_1 = __webpack_require__(26);
 const common_1 = __webpack_require__(1);
-const auth_1 = __webpack_require__(37);
-const bookshop_module_1 = __webpack_require__(46);
+const auth_1 = __webpack_require__(39);
+const bookshop_module_1 = __webpack_require__(48);
 let Application = class Application {
 };
 Application = __decorate([
@@ -497,7 +497,7 @@ const nodemailer_1 = __webpack_require__(15);
 const common_1 = __webpack_require__(1);
 let CommonService = class CommonService {
     sendEmail(sendEmailDto) {
-        const { email, randomCode } = sendEmailDto;
+        const { email, content } = sendEmailDto;
         const transporter = nodemailer_1.createTransport({
             host: process.env.EMAIL_HOST,
             port: Number(process.env.EMAIL_PORT),
@@ -511,7 +511,7 @@ let CommonService = class CommonService {
             from: process.env.EMAIL_USERNAME,
             to: email,
             subject: process.env.EMAIL_SUBJECT,
-            html: `<h1>${process.env.EMAIL_SUBJECT}管理员致电!</h1><p style="font-size: 18px;color:#000;">尊敬的申请者您好，欢迎您注册图书管理系统，验证码为：<u style="font-size: 16px;color:#1890ff;">${randomCode}</u></p><p style="font-size: 14px;color:#ff0000;">验证码10分钟内有效</p>`
+            html: content
         };
         return new Promise((resolve, reject) => {
             transporter.sendMail(mailOptions, (err, info) => {
@@ -598,16 +598,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_actions_entity_1 = __webpack_require__(49);
-const book_actions_entity_1 = __webpack_require__(17);
-const user_entity_1 = __webpack_require__(20);
-const manager_entity_1 = __webpack_require__(21);
-const book_entity_1 = __webpack_require__(18);
-const category_entity_1 = __webpack_require__(19);
+const user_actions_entity_1 = __webpack_require__(17);
+const book_actions_entity_1 = __webpack_require__(19);
+const user_entity_1 = __webpack_require__(18);
+const manager_entity_1 = __webpack_require__(22);
+const book_entity_1 = __webpack_require__(20);
+const category_entity_1 = __webpack_require__(21);
 const common_1 = __webpack_require__(1);
-const db_service_1 = __webpack_require__(22);
+const db_service_1 = __webpack_require__(23);
 const typeorm_1 = __webpack_require__(6);
-const email_entity_1 = __webpack_require__(23);
+const email_entity_1 = __webpack_require__(24);
 const app_entity_1 = __webpack_require__(9);
 let DbModule = class DbModule {
 };
@@ -659,7 +659,134 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const book_entity_1 = __webpack_require__(18);
+const user_entity_1 = __webpack_require__(18);
+const typeorm_1 = __webpack_require__(10);
+let UserActions = class UserActions {
+};
+__decorate([
+    typeorm_1.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], UserActions.prototype, "id", void 0);
+__decorate([
+    typeorm_1.Column({ default: '[]' }),
+    __metadata("design:type", String)
+], UserActions.prototype, "fav_list", void 0);
+__decorate([
+    typeorm_1.OneToOne(type => user_entity_1.User),
+    typeorm_1.JoinColumn(),
+    __metadata("design:type", user_entity_1.User)
+], UserActions.prototype, "user", void 0);
+UserActions = __decorate([
+    typeorm_1.Entity()
+], UserActions);
+exports.UserActions = UserActions;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const typeorm_1 = __webpack_require__(10);
+const swagger_1 = __webpack_require__(2);
+let User = class User {
+};
+__decorate([
+    typeorm_1.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], User.prototype, "id", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '邮箱',
+        required: true,
+        example: '123456@qq.com'
+    }),
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '昵称',
+        required: true,
+        example: 'test'
+    }),
+    typeorm_1.Column(),
+    __metadata("design:type", String)
+], User.prototype, "username", void 0);
+__decorate([
+    swagger_1.ApiProperty({ description: '密码', required: true, example: '123456' }),
+    typeorm_1.Column({ select: false }),
+    __metadata("design:type", String)
+], User.prototype, "password", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '头像',
+        required: false,
+        example: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=378824344,1185609431&fm=26&gp=0.jpg'
+    }),
+    typeorm_1.Column({
+        default: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=378824344,1185609431&fm=26&gp=0.jpg'
+    }),
+    __metadata("design:type", String)
+], User.prototype, "avatar", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '注册时间',
+        required: false,
+        example: 1581692214957
+    }),
+    typeorm_1.Column({
+        type: 'bigint',
+        default: 0
+    }),
+    __metadata("design:type", Number)
+], User.prototype, "register_time", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '最后一次登录时间',
+        required: false,
+        example: 1581692214957
+    }),
+    typeorm_1.Column({
+        type: 'bigint',
+        default: 0
+    }),
+    __metadata("design:type", Number)
+], User.prototype, "login_time", void 0);
+User = __decorate([
+    typeorm_1.Entity()
+], User);
+exports.User = User;
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const book_entity_1 = __webpack_require__(20);
 const typeorm_1 = __webpack_require__(10);
 let BookActions = class BookActions {
 };
@@ -690,7 +817,7 @@ exports.BookActions = BookActions;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -705,8 +832,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const book_actions_entity_1 = __webpack_require__(17);
-const category_entity_1 = __webpack_require__(19);
+const book_actions_entity_1 = __webpack_require__(19);
+const category_entity_1 = __webpack_require__(21);
 const typeorm_1 = __webpack_require__(10);
 const swagger_1 = __webpack_require__(2);
 let Book = class Book {
@@ -852,7 +979,7 @@ exports.Book = Book;
 
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -868,7 +995,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = __webpack_require__(10);
-const book_entity_1 = __webpack_require__(18);
+const book_entity_1 = __webpack_require__(20);
 let Category = class Category {
 };
 __decorate([
@@ -894,95 +1021,7 @@ exports.Category = Category;
 
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const typeorm_1 = __webpack_require__(10);
-const swagger_1 = __webpack_require__(2);
-let User = class User {
-};
-__decorate([
-    typeorm_1.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], User.prototype, "id", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '邮箱',
-        required: true,
-        example: '123456@qq.com'
-    }),
-    typeorm_1.Column(),
-    __metadata("design:type", String)
-], User.prototype, "email", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '昵称',
-        required: true,
-        example: 'test'
-    }),
-    typeorm_1.Column(),
-    __metadata("design:type", String)
-], User.prototype, "username", void 0);
-__decorate([
-    swagger_1.ApiProperty({ description: '密码', required: true, example: '123456' }),
-    typeorm_1.Column({ select: false }),
-    __metadata("design:type", String)
-], User.prototype, "password", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '头像',
-        required: false,
-        example: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=378824344,1185609431&fm=26&gp=0.jpg'
-    }),
-    typeorm_1.Column({
-        default: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=378824344,1185609431&fm=26&gp=0.jpg'
-    }),
-    __metadata("design:type", String)
-], User.prototype, "avatar", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '注册时间',
-        required: false,
-        example: 1581692214957
-    }),
-    typeorm_1.Column({
-        type: 'bigint',
-        default: 0
-    }),
-    __metadata("design:type", Number)
-], User.prototype, "register_time", void 0);
-__decorate([
-    swagger_1.ApiProperty({
-        description: '最后一次登录时间',
-        required: false,
-        example: 1581692214957
-    }),
-    typeorm_1.Column({
-        type: 'bigint',
-        default: 0
-    }),
-    __metadata("design:type", Number)
-], User.prototype, "login_time", void 0);
-User = __decorate([
-    typeorm_1.Entity()
-], User);
-exports.User = User;
-
-
-/***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1066,7 +1105,7 @@ exports.Manager = Manager;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1088,7 +1127,7 @@ exports.DbService = DbService;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1151,13 +1190,13 @@ exports.Email = Email;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/config");
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1169,21 +1208,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const book_entity_1 = __webpack_require__(20);
 const common_module_1 = __webpack_require__(13);
-const user_entity_1 = __webpack_require__(20);
+const user_entity_1 = __webpack_require__(18);
 const typeorm_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(1);
-const user_controller_1 = __webpack_require__(26);
-const user_service_1 = __webpack_require__(35);
-const auth_1 = __webpack_require__(37);
-const email_entity_1 = __webpack_require__(23);
-const user_actions_entity_1 = __webpack_require__(49);
+const user_controller_1 = __webpack_require__(27);
+const user_service_1 = __webpack_require__(36);
+const auth_1 = __webpack_require__(39);
+const email_entity_1 = __webpack_require__(24);
+const user_actions_entity_1 = __webpack_require__(17);
 let UserModule = class UserModule {
 };
 UserModule = __decorate([
     common_1.Module({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, email_entity_1.Email, user_actions_entity_1.UserActions]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, email_entity_1.Email, user_actions_entity_1.UserActions, book_entity_1.Book]),
             auth_1.AuthModule,
             common_module_1.CommonModule
         ],
@@ -1195,7 +1235,7 @@ exports.UserModule = UserModule;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1224,17 +1264,21 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const myapp_register_code_pipe_1 = __webpack_require__(27);
+const edit_pswd_dto_1 = __webpack_require__(52);
+const myapp_forget_pswd_pipe_1 = __webpack_require__(51);
+const myapp_verify_code_pipe_1 = __webpack_require__(28);
 const common_service_1 = __webpack_require__(14);
-const myapp_register_pipe_1 = __webpack_require__(28);
-const auth_service_1 = __webpack_require__(29);
-const passport_1 = __webpack_require__(32);
-const login_dto_1 = __webpack_require__(33);
-const register_dto_1 = __webpack_require__(34);
-const user_service_1 = __webpack_require__(35);
+const myapp_register_pipe_1 = __webpack_require__(29);
+const auth_service_1 = __webpack_require__(30);
+const passport_1 = __webpack_require__(33);
+const login_dto_1 = __webpack_require__(34);
+const register_dto_1 = __webpack_require__(35);
+const user_service_1 = __webpack_require__(36);
 const common_1 = __webpack_require__(1);
 const swagger_1 = __webpack_require__(2);
-const email_dto_1 = __webpack_require__(36);
+const email_dto_1 = __webpack_require__(37);
+const forget_pswd_dto_1 = __webpack_require__(38);
+const myapp_edit_pswd_pipe_1 = __webpack_require__(53);
 let UserController = class UserController {
     constructor(userService, authService, commonService) {
         this.userService = userService;
@@ -1251,12 +1295,52 @@ let UserController = class UserController {
             result: user
         };
     }
-    async sendEmail(emailDto, req) {
+    async forgetpswd(forgetPswdDto, req) {
+        const result = await this.userService.forgetpswd(forgetPswdDto);
+        return {
+            code: 2000,
+            message: '密码初始化成功，建议您立即修改。',
+            result
+        };
+    }
+    async editPswd(editPswdDto, req) {
+        const { id } = req.user;
+        const { firstPswd: newPswd, oldPswd } = editPswdDto;
+        await this.userService.editPswd(id, oldPswd, newPswd);
+        return {
+            code: 2000,
+            message: '密码修改成功，请您重新登录。'
+        };
+    }
+    async sendResisterEmail(emailDto, req) {
         const { email } = req.body;
         const randomCode = this.commonService.randomCode();
+        const content = `<h1>${process.env.EMAIL_SUBJECT}管理员致电!</h1><p style="font-size: 18px;color:#000;">尊敬的申请者您好，欢迎您注册猿来阅掌上阅读，验证码为：<u style="font-size: 16px;color:#1890ff;">${randomCode}</u></p><p style="font-size: 14px;color:#ff0000;">验证码10分钟内有效</p>`;
         const { messageId } = await this.commonService.sendEmail({
             email,
-            randomCode
+            content
+        });
+        const id = messageId.slice(1, -1);
+        const fail_time = Date.now() + 1000 * 60 * 10;
+        const _a = await this.userService.createEmail({
+            id,
+            email,
+            code: randomCode,
+            fail_time
+        }), { code } = _a, result = __rest(_a, ["code"]);
+        return {
+            code: 2001,
+            message: '验证码发送成功，请注意查收！',
+            result
+        };
+    }
+    async sendForgetpswdEmail(emailDto, req) {
+        const { email } = req.body;
+        const randomCode = this.commonService.randomCode();
+        const content = `<h1>${process.env.EMAIL_SUBJECT}管理员致电!</h1><p style="font-size: 18px;color:#000;">尊敬的用户您好，您正在试图找回密码，如非您本人操作，请忽略！验证码为：<u style="font-size: 16px;color:#1890ff;">${randomCode}</u></p><p style="font-size: 14px;color:#ff0000;">验证码10分钟内有效</p>`;
+        const { messageId } = await this.commonService.sendEmail({
+            email,
+            content
         });
         const id = messageId.slice(1, -1);
         const fail_time = Date.now() + 1000 * 60 * 10;
@@ -1281,11 +1365,19 @@ let UserController = class UserController {
         const user = await this.userService.getUser(req.user);
         return { result: user, code: 2000, message: 'Token验证通过。' };
     }
+    async getFavList(req) {
+        const favList = await this.userService.getFavList(req.user);
+        return {
+            result: favList,
+            code: 2000,
+            message: '收藏列表查询成功'
+        };
+    }
 };
 __decorate([
     common_1.Post('/register'),
     swagger_1.ApiOperation({ summary: '注册' }),
-    common_1.UsePipes(myapp_register_pipe_1.MyappRegisterPipe, myapp_register_code_pipe_1.MyappRegisterCodePipe),
+    common_1.UsePipes(myapp_register_pipe_1.MyappRegisterPipe, myapp_verify_code_pipe_1.MyappVerifyCodePipe),
     __param(0, common_1.Body()),
     __param(1, common_1.Request()),
     __metadata("design:type", Function),
@@ -1293,14 +1385,47 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "register", null);
 __decorate([
-    common_1.Post('/code'),
-    swagger_1.ApiOperation({ summary: '发送验证码' }),
+    common_1.Put('/forgetpswd'),
+    swagger_1.ApiOperation({ summary: '忘记密码' }),
+    common_1.UsePipes(myapp_forget_pswd_pipe_1.MyappForgetPswdPipe, myapp_verify_code_pipe_1.MyappVerifyCodePipe),
+    __param(0, common_1.Body()),
+    __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [forget_pswd_dto_1.ForgetPswdDto, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "forgetpswd", null);
+__decorate([
+    common_1.Put('/editpswd'),
+    common_1.UseGuards(passport_1.AuthGuard('myapp-jwt')),
+    swagger_1.ApiBearerAuth(),
+    swagger_1.ApiOperation({ summary: '修改密码' }),
+    common_1.UsePipes(myapp_edit_pswd_pipe_1.MyappEditPswdPipe),
+    __param(0, common_1.Body()),
+    __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [edit_pswd_dto_1.EditPswdDto, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "editPswd", null);
+__decorate([
+    common_1.Post('/resister/code'),
+    swagger_1.ApiOperation({ summary: '发送注册验证码' }),
     common_1.UsePipes(myapp_register_pipe_1.MyappRegisterPipe),
-    __param(0, common_1.Body()), __param(1, common_1.Request()),
+    __param(0, common_1.Body()),
+    __param(1, common_1.Request()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [email_dto_1.EmailDto, Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "sendEmail", null);
+], UserController.prototype, "sendResisterEmail", null);
+__decorate([
+    common_1.Post('/forgetpswd/code'),
+    swagger_1.ApiOperation({ summary: '发送忘记密码密码验证码' }),
+    common_1.UsePipes(myapp_forget_pswd_pipe_1.MyappForgetPswdPipe),
+    __param(0, common_1.Body()),
+    __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [email_dto_1.EmailDto, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "sendForgetpswdEmail", null);
 __decorate([
     common_1.Put('/login'),
     common_1.UseGuards(passport_1.AuthGuard('myapp-local')),
@@ -1320,6 +1445,16 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getUser", null);
+__decorate([
+    common_1.Get('/fav'),
+    common_1.UseGuards(passport_1.AuthGuard('myapp-jwt')),
+    swagger_1.ApiBearerAuth(),
+    swagger_1.ApiOperation({ summary: '获取用户收藏' }),
+    __param(0, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getFavList", null);
 UserController = __decorate([
     common_1.Controller('user'),
     swagger_1.ApiTags('用户'),
@@ -1331,7 +1466,7 @@ exports.UserController = UserController;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1349,11 +1484,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const email_entity_1 = __webpack_require__(23);
+const email_entity_1 = __webpack_require__(24);
 const typeorm_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(1);
 const typeorm_2 = __webpack_require__(10);
-let MyappRegisterCodePipe = class MyappRegisterCodePipe {
+let MyappVerifyCodePipe = class MyappVerifyCodePipe {
     constructor(emailRepository) {
         this.emailRepository = emailRepository;
     }
@@ -1378,16 +1513,16 @@ let MyappRegisterCodePipe = class MyappRegisterCodePipe {
         return user;
     }
 };
-MyappRegisterCodePipe = __decorate([
+MyappVerifyCodePipe = __decorate([
     common_1.Injectable(),
     __param(0, typeorm_1.InjectRepository(email_entity_1.Email)),
     __metadata("design:paramtypes", [typeorm_2.Repository])
-], MyappRegisterCodePipe);
-exports.MyappRegisterCodePipe = MyappRegisterCodePipe;
+], MyappVerifyCodePipe);
+exports.MyappVerifyCodePipe = MyappVerifyCodePipe;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1405,7 +1540,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_entity_1 = __webpack_require__(20);
+const user_entity_1 = __webpack_require__(18);
 const typeorm_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(1);
 const typeorm_2 = __webpack_require__(10);
@@ -1434,7 +1569,7 @@ exports.MyappRegisterPipe = MyappRegisterPipe;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1452,12 +1587,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_entity_1 = __webpack_require__(20);
-const manager_entity_1 = __webpack_require__(21);
-const jwt_1 = __webpack_require__(30);
+const user_entity_1 = __webpack_require__(18);
+const manager_entity_1 = __webpack_require__(22);
+const jwt_1 = __webpack_require__(31);
 const typeorm_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(1);
-const bcryptjs_1 = __webpack_require__(31);
+const bcryptjs_1 = __webpack_require__(32);
 const typeorm_2 = __webpack_require__(10);
 let AuthService = class AuthService {
     constructor(managerRepository, userRepository, jwtService) {
@@ -1528,25 +1663,25 @@ exports.AuthService = AuthService;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/jwt");
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("bcryptjs");
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = require("@nestjs/passport");
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1589,7 +1724,7 @@ exports.LoginDto = LoginDto;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1604,15 +1739,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_entity_1 = __webpack_require__(20);
+const user_entity_1 = __webpack_require__(18);
 const class_validator_1 = __webpack_require__(12);
 const swagger_1 = __webpack_require__(2);
 class RegisterDto extends user_entity_1.User {
 }
 __decorate([
     class_validator_1.IsNotEmpty({ message: '请输入昵称' }),
-    class_validator_1.MinLength(3, { message: '账号长度至少为3' }),
-    class_validator_1.MaxLength(10, { message: '账号长度至多为10' }),
+    class_validator_1.MinLength(3, { message: '呢称长度至少为3' }),
+    class_validator_1.MaxLength(10, { message: '呢称长度至多为10' }),
     __metadata("design:type", String)
 ], RegisterDto.prototype, "username", void 0);
 __decorate([
@@ -1638,7 +1773,7 @@ exports.RegisterDto = RegisterDto;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1656,18 +1791,21 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_actions_entity_1 = __webpack_require__(49);
+const book_entity_1 = __webpack_require__(20);
+const user_actions_entity_1 = __webpack_require__(17);
 const typeorm_1 = __webpack_require__(6);
-const user_entity_1 = __webpack_require__(20);
+const user_entity_1 = __webpack_require__(18);
 const common_1 = __webpack_require__(1);
 const typeorm_2 = __webpack_require__(10);
-const bcryptjs_1 = __webpack_require__(31);
-const email_entity_1 = __webpack_require__(23);
+const bcryptjs_1 = __webpack_require__(32);
+const email_entity_1 = __webpack_require__(24);
+const bcryptjs_2 = __webpack_require__(32);
 let UserService = class UserService {
-    constructor(userRepository, emailRepository, userActionsRepository) {
+    constructor(userRepository, emailRepository, userActionsRepository, bookRepository) {
         this.userRepository = userRepository;
         this.emailRepository = emailRepository;
         this.userActionsRepository = userActionsRepository;
+        this.bookRepository = bookRepository;
     }
     async register(registerDto) {
         registerDto.register_time = Date.now();
@@ -1676,11 +1814,45 @@ let UserService = class UserService {
         await this.userActionsRepository.save({ user });
         return user;
     }
+    async forgetpswd(forgetPswdDto) {
+        const { email, code, emailId } = forgetPswdDto;
+        const DEFAULT_PSWD = '123456';
+        const newPassword = bcryptjs_1.hashSync(DEFAULT_PSWD);
+        let user = await this.userRepository.findOne({ email });
+        user.password = newPassword;
+        await this.userRepository.save(user);
+        return { default_pswd: DEFAULT_PSWD };
+    }
+    async editPswd(id, oldPswd, newPswd) {
+        let user = await typeorm_2.getConnection()
+            .createQueryBuilder()
+            .select('user')
+            .from(user_entity_1.User, 'user')
+            .where('user.id =:id ', { id })
+            .addSelect('user.password')
+            .getOne();
+        if (!bcryptjs_2.compareSync(oldPswd, user.password)) {
+            throw new common_1.BadRequestException('当前密码错误');
+        }
+        user.password = bcryptjs_1.hashSync(newPswd);
+        await this.userRepository.save(user);
+        return true;
+    }
     async getUser(user) {
         return await this.userRepository.findOne(user.id);
     }
     async createEmail(email) {
         return await this.emailRepository.save(email);
+    }
+    async getFavList(user) {
+        const { id } = user;
+        let { fav_list } = await this.userActionsRepository
+            .createQueryBuilder('user_actions')
+            .where('user_actions.userId = :userId', { userId: id })
+            .getOne();
+        return await this.bookRepository.findByIds(JSON.parse(fav_list), {
+            select: ['id', 'zh_name', 'cover', 'description']
+        });
     }
 };
 UserService = __decorate([
@@ -1688,7 +1860,9 @@ UserService = __decorate([
     __param(0, typeorm_1.InjectRepository(user_entity_1.User)),
     __param(1, typeorm_1.InjectRepository(email_entity_1.Email)),
     __param(2, typeorm_1.InjectRepository(user_actions_entity_1.UserActions)),
+    __param(3, typeorm_1.InjectRepository(book_entity_1.Book)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], UserService);
@@ -1696,7 +1870,7 @@ exports.UserService = UserService;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1728,20 +1902,6 @@ exports.EmailDto = EmailDto;
 
 
 /***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(38));
-__export(__webpack_require__(29));
-
-
-/***/ }),
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1753,19 +1913,74 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const myapp_jwt_strategy_1 = __webpack_require__(39);
-const myapp_local_strategy_1 = __webpack_require__(41);
-const user_entity_1 = __webpack_require__(20);
-const roles_guard_1 = __webpack_require__(43);
-const manage_jwt_strategy_1 = __webpack_require__(44);
-const jwt_1 = __webpack_require__(30);
-const manager_entity_1 = __webpack_require__(21);
+const class_validator_1 = __webpack_require__(12);
+const swagger_1 = __webpack_require__(2);
+class ForgetPswdDto {
+}
+__decorate([
+    swagger_1.ApiProperty({
+        description: '邮箱',
+        required: true,
+        example: '421821209@qq.com'
+    }),
+    class_validator_1.IsEmail({ allow_display_name: true }, { message: '请输入正确的邮箱' }),
+    __metadata("design:type", String)
+], ForgetPswdDto.prototype, "email", void 0);
+__decorate([
+    class_validator_1.IsNotEmpty({ message: '请输入验证码' }),
+    swagger_1.ApiProperty({ description: '验证码', required: true }),
+    __metadata("design:type", String)
+], ForgetPswdDto.prototype, "code", void 0);
+__decorate([
+    swagger_1.ApiProperty({ description: '邮件id', required: true }),
+    __metadata("design:type", String)
+], ForgetPswdDto.prototype, "emailId", void 0);
+exports.ForgetPswdDto = ForgetPswdDto;
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(40));
+__export(__webpack_require__(30));
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const myapp_jwt_strategy_1 = __webpack_require__(41);
+const myapp_local_strategy_1 = __webpack_require__(43);
+const user_entity_1 = __webpack_require__(18);
+const roles_guard_1 = __webpack_require__(45);
+const manage_jwt_strategy_1 = __webpack_require__(46);
+const jwt_1 = __webpack_require__(31);
+const manager_entity_1 = __webpack_require__(22);
 const typeorm_1 = __webpack_require__(6);
-const manage_local_strategy_1 = __webpack_require__(45);
-const passport_1 = __webpack_require__(32);
+const manage_local_strategy_1 = __webpack_require__(47);
+const passport_1 = __webpack_require__(33);
 const common_1 = __webpack_require__(1);
-const auth_service_1 = __webpack_require__(29);
+const auth_service_1 = __webpack_require__(30);
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
@@ -1797,7 +2012,7 @@ exports.AuthModule = AuthModule;
 
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1812,8 +2027,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const passport_jwt_1 = __webpack_require__(40);
-const passport_1 = __webpack_require__(32);
+const passport_jwt_1 = __webpack_require__(42);
+const passport_1 = __webpack_require__(33);
 const common_1 = __webpack_require__(1);
 let MyappJwtStrategy = class MyappJwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy, 'myapp-jwt') {
     constructor() {
@@ -1836,13 +2051,13 @@ exports.MyappJwtStrategy = MyappJwtStrategy;
 
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports) {
 
 module.exports = require("passport-jwt");
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1857,9 +2072,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const auth_service_1 = __webpack_require__(29);
-const passport_local_1 = __webpack_require__(42);
-const passport_1 = __webpack_require__(32);
+const auth_service_1 = __webpack_require__(30);
+const passport_local_1 = __webpack_require__(44);
+const passport_1 = __webpack_require__(33);
 const common_1 = __webpack_require__(1);
 let MyappLocalStrategy = class MyappLocalStrategy extends passport_1.PassportStrategy(passport_local_1.Strategy, 'myapp-local') {
     constructor(authService) {
@@ -1881,13 +2096,13 @@ exports.MyappLocalStrategy = MyappLocalStrategy;
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = require("passport-local");
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1930,7 +2145,7 @@ exports.RolesGuard = RolesGuard;
 
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1945,8 +2160,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const passport_jwt_1 = __webpack_require__(40);
-const passport_1 = __webpack_require__(32);
+const passport_jwt_1 = __webpack_require__(42);
+const passport_1 = __webpack_require__(33);
 const common_1 = __webpack_require__(1);
 let ManageJwtStrategy = class ManageJwtStrategy extends passport_1.PassportStrategy(passport_jwt_1.Strategy, 'manage-jwt') {
     constructor() {
@@ -1969,7 +2184,7 @@ exports.ManageJwtStrategy = ManageJwtStrategy;
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1984,9 +2199,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const auth_service_1 = __webpack_require__(29);
-const passport_local_1 = __webpack_require__(42);
-const passport_1 = __webpack_require__(32);
+const auth_service_1 = __webpack_require__(30);
+const passport_local_1 = __webpack_require__(44);
+const passport_1 = __webpack_require__(33);
 const common_1 = __webpack_require__(1);
 let ManageLocalStrategy = class ManageLocalStrategy extends passport_1.PassportStrategy(passport_local_1.Strategy, 'manage-local') {
     constructor(authService) {
@@ -2008,7 +2223,7 @@ exports.ManageLocalStrategy = ManageLocalStrategy;
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2020,13 +2235,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const book_entity_1 = __webpack_require__(18);
-const category_entity_1 = __webpack_require__(19);
+const book_entity_1 = __webpack_require__(20);
+const category_entity_1 = __webpack_require__(21);
 const typeorm_1 = __webpack_require__(6);
 const common_1 = __webpack_require__(1);
-const bookshop_controller_1 = __webpack_require__(47);
-const bookshop_service_1 = __webpack_require__(48);
-const user_actions_entity_1 = __webpack_require__(49);
+const bookshop_controller_1 = __webpack_require__(49);
+const bookshop_service_1 = __webpack_require__(50);
+const user_actions_entity_1 = __webpack_require__(17);
 let BookshopModule = class BookshopModule {
 };
 BookshopModule = __decorate([
@@ -2040,7 +2255,7 @@ exports.BookshopModule = BookshopModule;
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2058,8 +2273,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const passport_1 = __webpack_require__(32);
-const bookshop_service_1 = __webpack_require__(48);
+const passport_1 = __webpack_require__(33);
+const bookshop_service_1 = __webpack_require__(50);
 const common_1 = __webpack_require__(1);
 const swagger_1 = __webpack_require__(2);
 let BookshopController = class BookshopController {
@@ -2152,7 +2367,7 @@ exports.BookshopController = BookshopController;
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2170,12 +2385,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const category_entity_1 = __webpack_require__(19);
+const category_entity_1 = __webpack_require__(21);
 const common_1 = __webpack_require__(1);
 const typeorm_1 = __webpack_require__(6);
 const typeorm_2 = __webpack_require__(10);
-const book_entity_1 = __webpack_require__(18);
-const user_actions_entity_1 = __webpack_require__(49);
+const book_entity_1 = __webpack_require__(20);
+const user_actions_entity_1 = __webpack_require__(17);
 let BookshopService = class BookshopService {
     constructor(categoryRepository, bookRepository, userActionsRepository) {
         this.categoryRepository = categoryRepository;
@@ -2281,7 +2496,54 @@ exports.BookshopService = BookshopService;
 
 
 /***/ }),
-/* 49 */
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const user_entity_1 = __webpack_require__(18);
+const typeorm_1 = __webpack_require__(6);
+const common_1 = __webpack_require__(1);
+const typeorm_2 = __webpack_require__(10);
+let MyappForgetPswdPipe = class MyappForgetPswdPipe {
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
+    async transform(user, metadata) {
+        const { email } = user;
+        const isUser = await this.userRepository.findOne({ email });
+        if (!isUser) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.FORBIDDEN,
+                message: '该邮箱尚未注册！'
+            }, 400);
+        }
+        return user;
+    }
+};
+MyappForgetPswdPipe = __decorate([
+    common_1.Injectable(),
+    __param(0, typeorm_1.InjectRepository(user_entity_1.User)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
+], MyappForgetPswdPipe);
+exports.MyappForgetPswdPipe = MyappForgetPswdPipe;
+
+
+/***/ }),
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2296,27 +2558,82 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_entity_1 = __webpack_require__(20);
-const typeorm_1 = __webpack_require__(10);
-let UserActions = class UserActions {
-};
+const class_validator_1 = __webpack_require__(12);
+const swagger_1 = __webpack_require__(2);
+class EditPswdDto {
+}
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn(),
-    __metadata("design:type", Number)
-], UserActions.prototype, "id", void 0);
-__decorate([
-    typeorm_1.Column({ default: '[]' }),
+    swagger_1.ApiProperty({
+        description: '旧密码',
+        required: true,
+        example: '123456'
+    }),
+    class_validator_1.IsNotEmpty({ message: '请输入当前密码' }),
+    class_validator_1.MinLength(6, { message: '密码长度至少为6' }),
+    class_validator_1.MaxLength(16, { message: '密码长度至多为16' }),
     __metadata("design:type", String)
-], UserActions.prototype, "fav_list", void 0);
+], EditPswdDto.prototype, "oldPswd", void 0);
 __decorate([
-    typeorm_1.OneToOne(type => user_entity_1.User),
-    typeorm_1.JoinColumn(),
-    __metadata("design:type", user_entity_1.User)
-], UserActions.prototype, "user", void 0);
-UserActions = __decorate([
-    typeorm_1.Entity()
-], UserActions);
-exports.UserActions = UserActions;
+    swagger_1.ApiProperty({
+        description: '新密码',
+        required: true,
+        example: '123456'
+    }),
+    class_validator_1.IsNotEmpty({ message: '请输入新密码' }),
+    class_validator_1.MinLength(6, { message: '密码长度至少为6' }),
+    class_validator_1.MaxLength(16, { message: '密码长度至多为16' }),
+    __metadata("design:type", String)
+], EditPswdDto.prototype, "firstPswd", void 0);
+__decorate([
+    swagger_1.ApiProperty({
+        description: '再次输入新密码',
+        required: true,
+        example: '123456'
+    }),
+    class_validator_1.IsNotEmpty({ message: '请再次输入新密码' }),
+    class_validator_1.MinLength(6, { message: '密码长度至少为6' }),
+    class_validator_1.MaxLength(16, { message: '密码长度至多为16' }),
+    __metadata("design:type", String)
+], EditPswdDto.prototype, "secondPswd", void 0);
+exports.EditPswdDto = EditPswdDto;
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const common_1 = __webpack_require__(1);
+let MyappEditPswdPipe = class MyappEditPswdPipe {
+    async transform(editPswdDto, metadata) {
+        const { oldPswd, firstPswd, secondPswd } = editPswdDto;
+        if (oldPswd === firstPswd) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.FORBIDDEN,
+                message: '新密码不能和当前密码一致'
+            }, 400);
+        }
+        else if (firstPswd !== secondPswd) {
+            throw new common_1.HttpException({
+                status: common_1.HttpStatus.FORBIDDEN,
+                message: '新密码两次输入不一致'
+            }, 400);
+        }
+        return editPswdDto;
+    }
+};
+MyappEditPswdPipe = __decorate([
+    common_1.Injectable()
+], MyappEditPswdPipe);
+exports.MyappEditPswdPipe = MyappEditPswdPipe;
 
 
 /***/ })
