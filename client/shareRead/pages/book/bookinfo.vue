@@ -86,10 +86,11 @@
 
 		<view class="zhanwei" style="height: 120rpx;background-color: #CCCCCC;"></view>
 		<view class="fixed-module">
-			<view class="add-book">
-				<view class="icon"></view>
-				<view class="text" v-if="alreadDownLoad">
-					已加入书架
+			<view class="add-book" @click="handleAddFav()">
+				<view class="iconfont icon-shoucang1" v-if="isFav===1"></view>
+				<view class="iconfont icon-shoucang" v-else></view>
+				<view class="text">
+					收藏
 				</view>
 			</view>
 			<view class="down-book">
@@ -99,7 +100,10 @@
 			</view>
 			<view class="add-book">
 				<view class="icon"></view>
-				<view class="text" @click="handleSetStorage()">
+				<view class="text" v-if="alreadDownLoad">
+					已加入书架
+				</view>
+				<view class="text" v-else @click="handleSetStorage()">
 					加入书架
 				</view>
 			</view>
@@ -114,8 +118,10 @@
 	export default {
 		data() {
 			return {
+				token: getApp().globalData.token,
 				apiUrl: getApp().globalData.api,
 				book: null,
+				isFav:0,
 				progress: {
 					percent: 0,
 					isShow: false
@@ -146,6 +152,18 @@
 			}
 		},
 		methods: {
+			async handleAddFav() {
+				const {
+					message,result
+				} = await this.$api.bookshop.favbook(this.book.id);
+				uni.showToast({
+					title: message,
+					icon: 'none',
+					duration: 2000,
+					mask:true
+				})
+				this.isFav = result.isFav;
+			},
 			handleShowModal() {
 				uni.showModal({
 					title: '提示',
@@ -239,10 +257,19 @@
 						}
 					}
 				}
+			},
+			async favStatus(id){
+				if(!this.token) return false
+				const {
+					result
+				} = await this.$api.bookshop.favStatus(id);
+				this.isFav = result.isFav;
+				console.log(this.isFav)
 			}
 		},
 		onLoad(op) {
-			this.getBook(op.id)
+			this.getBook(op.id);
+			this.favStatus(op.id);
 		}
 	}
 </script>

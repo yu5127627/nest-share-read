@@ -17,6 +17,7 @@
 <style>
 	/*每个页面公共css */
 	@import './uni.scss';
+	@import url("http://at.alicdn.com/t/font_1659851_xv7tv7yptc.css");
 	page {
 		background-color: #f9f9f9;
 	}

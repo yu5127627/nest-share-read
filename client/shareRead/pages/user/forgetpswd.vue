@@ -1,31 +1,23 @@
 <template>
-	<view class="register">
-		<view class="register-form">
+	<view class="forgetpswd">
+		<view class="forgetpswd-form">
 			<view class="form-item">
 				<view class="iconfont icon-youxiang"></view>
-				<input v-model="register.email" placeholder="请输入邮箱" />
+				<input v-model="forgetpswd.email" placeholder="请输入邮箱" />
 			</view>
 			<view class="form-item">
 				<view class="iconfont icon-mima"></view>
-				<input password="true" v-model="register.code" placeholder="请输入验证码" />
+				<input v-model="forgetpswd.code" placeholder="请输入验证码" />
 				<view class="send-code" @click="handleSendCode()">
 					{{verifyCode.isSend? verifyCode.timing+'秒后重发':verifyCode.text}}
 				</view>
 			</view>
-			<view class="form-item">
-				<view class="iconfont icon-mima"></view>
-				<input password="true" v-model="register.firstPswd" placeholder="请输入密码" />
-			</view>
-			<view class="form-item">
-				<view class="iconfont icon-mima"></view>
-				<input password="true" v-model="register.password" placeholder="请再次输入密码" />
-			</view>
-			<button class="register-btn" @click="handleRegister()">
-				注册
+			<button class="register-btn" @click="handleForgetpswd()">
+				重置密码
 			</button>
 		</view>
-		<view class="login">
-			已有账号,前去<navigator style="color: #0081FF;" url="login">登录</navigator>
+		<view class="tip" v-if="resetpswd">
+			温馨提示: 重置后密码为 <text style="color: #13bfa3;">{{resetpswd}}</text>!
 		</view>
 	</view>
 </template>
@@ -35,19 +27,18 @@
 	export default {
 		data() {
 			return {
-				register: {
-					email: 'sxczykn@163.com',
-					firstPswd: '',
-					password: '',
+				forgetpswd: {
+					email: '421821209@qq.com',
 					code: '',
-					emailId: ''
+					emailId: 'null'
 				},
 				verifyCode: {
 					timing: 120,
 					text: '获取验证码',
 					isSend: false,
 					timer: null
-				}
+				},
+				resetpswd: null
 			};
 		},
 		methods: {
@@ -57,10 +48,10 @@
 				const {
 					message,
 					result
-				} = await this.$api.user.registercode({
-					email: this.register.email
+				} = await this.$api.user.forgetpswdcode({
+					email: this.forgetpswd.email
 				});
-				this.register.emailId = result.id;
+				this.forgetpswd.emailId = result.id;
 				uni.showToast({
 					title: message,
 					duration: 2000,
@@ -78,51 +69,31 @@
 					this.verifyCode.timing--;
 				}, 1000)
 			},
-			async handleRegister() {
+			async handleForgetpswd() {
 				const reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-				if (!reg.test(this.register.email)) {
+				if (!reg.test(this.forgetpswd.email)) {
 					uni.showToast({
 						title: '请输入正确的邮箱地址',
 						duration: 2000,
 						icon: 'none'
 					});
-				} else if (!this.register.code) {
+				} else if (!this.forgetpswd.code) {
 					uni.showToast({
 						title: '请输入验证码',
 						duration: 2000,
 						icon: 'none'
 					});
-				} else if (this.register.firstPswd !== this.register.password) {
-					uni.showToast({
-						title: '两次密码输入不一致',
-						duration: 2000,
-						icon: 'none'
-					});
-				} else if (this.register.firstPswd.length < 6 || this.register.firstPswd.length > 16) {
-					uni.showToast({
-						title: '密码长度至少为6位，至多为16位',
-						duration: 2000,
-						icon: 'none'
-					});
 				} else {
 					const {
-						firstPswd,
-						...registerDto
-					} = this.register;
-					const {
-						message
-					} = await this.$api.user.register(registerDto);
+						message,
+						result
+					} = await this.$api.user.forgetpswd(this.forgetpswd);
 					uni.showToast({
 						title: message,
 						duration: 2000,
-						icon: 'none',
-						mask: true
+						icon: 'none'
 					});
-					setTimeout(() => {
-						uni.redirectTo({
-							url: './login'
-						})
-					}, 2000)
+					this.resetpswd = result.default_pswd;
 				}
 			}
 		}
@@ -134,11 +105,11 @@
 		background-color: #FFFFFF;
 	}
 
-	.register {
+	.forgetpswd {
 		min-height: 100%;
 		margin-top: 200rpx;
 
-		.register-form {
+		.forgetpswd-form {
 			padding: 60rpx;
 
 			.form-item {
@@ -186,12 +157,10 @@
 			}
 		}
 
-		.login {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			margin-top: 200rpx;
+		.tip {
+			margin-top: 100rpx;
 			color: #CCCCCC;
+			text-align: center;
 			font-size: 28rpx;
 		}
 	}

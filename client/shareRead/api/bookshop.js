@@ -16,7 +16,7 @@ const categoryBooks = (id) => {
 	})
 }
 
-// 一本图书
+// 获取一本图书信息
 const book = (id) => {
 	return http({
 		url: `bookshop/book/${id}`,
@@ -24,8 +24,26 @@ const book = (id) => {
 	})
 }
 
+// 登录状态时查询图书是否被收藏
+const favStatus = (id) => {
+	return http({
+		url: `bookshop/book/fav/${id}`,
+		method: 'get'
+	})
+}
+
+// 收藏一本图书
+const favbook = (id) => {
+	return http({
+		url: `bookshop/book/fav/${id}`,
+		method: 'put'
+	})
+}
+
 export default {
 	category,
 	categoryBooks,
-	book
+	book,
+	favbook,
+	favStatus
 }

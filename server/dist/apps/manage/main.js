@@ -1283,7 +1283,7 @@ __decorate([
         required: true,
         example: 'test'
     }),
-    typeorm_1.Column(),
+    typeorm_1.Column({ default: 'Hello World' }),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
 __decorate([

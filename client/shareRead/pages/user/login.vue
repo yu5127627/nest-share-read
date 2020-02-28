@@ -1,36 +1,33 @@
 <template>
 	<view class="login">
-		<view class="content">
-			<view class="logo" style="height:200rpx;">
-				<!-- <image src="/static/login/logo.png" mode="widthFix"></image> -->
+		<view class="login-form">
+			<view class="form-item">
+				<view class="iconfont icon-youxiang"></view>
+				<input  v-model="loginForm.email" placeholder="请输入邮箱" />
 			</view>
-			<view class="login-form">
-				<view class="item phone">
-					<image class="icon left" src="/static/login/icon_phone.png" mode="widthFix"></image>
-					<input class="uni-input" v-model="loginForm.email" focus placeholder="邮箱" placeholder-class="input-placeholder" />
-					<image class="icon right" src="/static/login/icon_phone_right.png" mode="widthFix"></image>
-				</view>
-				<view class="item password">
-					<image class="icon left" src="/static/login/icon_pwd.png" mode="widthFix"></image>
-					<input class="uni-input" password="true" v-model="loginForm.password" placeholder="密码" placeholder-class="input-placeholder" />
-					<image class="icon right" src="/static/login/icon_pwd_right.png" mode="widthFix"></image>
-				</view>
-				<button class="btn" @click="handleLogin()">
-					<text>登录</text>
-				</button>
-				<view class="forgot-pwd"><text>忘记密码？</text></view>
+			<view class="form-item">
+				<view class="iconfont icon-mima"></view>
+				<input  password="true" v-model="loginForm.password" placeholder="请输入密码"/>
 			</view>
-
-			<view class="login-third">
-				<view class="text">
-					<image src="/static/login/icon_line.png" mode="widthFix"></image>
-				</view>
-				<view class="flex">
-					<image src="/static/login/icon_weibo.png" mode="widthFix"></image>
-					<image src="/static/login/icon_wechat.png" mode="widthFix"></image>
-					<image src="/static/login/icon_qq.png" mode="widthFix"></image>
-				</view>
+			<button class="login-btn" @click="handleLogin()">
+				登录
+			</button>
+		</view>
+		<navigator class="forget-pswd" url="forgetpswd">
+		 忘记密码
+		</navigator>
+		<view class="other-login">
+			<view class="title">
+				其它方式登录
 			</view>
+			<view class="login-box">
+				<view class="iconfont icon-weixin-denglu weixin"></view>
+				<view class="iconfont icon-weibo-denglu weibo"></view>
+				<view class="iconfont icon-QQ-denglu qq"></view>
+			</view>
+		</view>
+		<view class="register">
+		 还没有账号,前去<navigator style="color: #0081FF;" url="register">注册</navigator>
 		</view>
 	</view>
 </template>
@@ -94,105 +91,89 @@
 </script>
 
 <style lang="scss">
-	.login {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color:$theme-color ;
-
-		.content {
-			position: absolute;
-			top: 0;
-			width: 100%;
-		}
-
-		.logo {
-			text-align: center;
-			margin: 96rpx auto 73rpx auto;
-
-			image {
-				width: 50%;
-			}
-		}
-
-		.login-form {
-			width: 630rpx;
-			margin: auto;
-
-			.item {
-				width: 630rpx;
-				height: 84rpx;
-				border-radius: 6rpx;
-				margin-bottom: 33rpx;
+	page{
+		 // background-image: linear-gradient(rgb(94,116,198), rgb(136,200,216));
+		 background-color: #FFFFFF;
+	}
+	.login{
+		min-height: 100%;
+		margin-top: 200rpx;
+		.login-form{
+			padding: 60rpx;
+			.form-item{
+				border-bottom: 2rpx solid #ccc;
 				display: flex;
-				justify-content: space-around;
-				align-items: center;
-				background-color: #4781e2;
-
-				.icon {
-					width: 36rpx;
-					height: 40rpx;
+				height: 80rpx;
+				margin-bottom: 30rpx;
+				.iconfont{
+					width: 80rpx;
+					line-height: 80rpx;
+					font-size: 40rpx;
+					text-align: center;
 				}
-
-				.input-placeholder {
-					color: #fff;
-					line-height: 84rpx;
-					height: 84rpx;
-					margin: auto;
+				input{
+					height: 80rpx;
+					line-height:80rpx;
+					flex: 1;
+					margin-left: 20rpx;
 				}
 			}
-
-			input {
-				color: #fff;
-				height: 84rpx;
-				line-height: 84rpx;
+			.login-btn{
+				border-radius: 50rpx;
+				height: 80rpx;
+				line-height: 80rpx;
+				margin-top: 60rpx;
+				background-color: $theme-color;
+				color: #FFFFFF;
+				box-shadow: 0px 4px 4px rgba(0,0,0,0.2);
 			}
-
-			.btn {
-				margin: 43rpx auto 22rpx auto;
-				text-align: center;
-				height: 84rpx;
-				line-height: 84rpx;
-				border-radius: 6rpx;
-				background-color: #6ea0f8;
-			}
-
-
-			.forgot-pwd {
-				text-align: right;
-			}
-
 		}
-
-		.login-third {
-			.text {
-				margin: 137rpx auto 106rpx auto;
+		.forget-pswd{
+			font-size: 28rpx;
+			text-align: right;
+			padding: 0 50rpx;
+			letter-spacing: 6rpx;
+			color: #CCCCCC;
+			text-decoration: underline ;
+		}
+		.other-login{
+			margin-top: 100rpx;
+			.title{
 				text-align: center;
+				font-size: 30rpx;
+				height: 60rpx;
+				line-height: 60rpx;
 			}
-
-			.flex {
-				text-align: center;
+			.login-box{
 				display: flex;
-				justify-content: space-around;
+				margin: 0 20%;
+				.iconfont{
+					flex: 1;
+					height: 130rpx;
+					line-height: 130rpx;
+					text-align: center;
+					font-size: 70rpx;
+				}
+				.weixin{
+					color: rgb(9,187,7);
+				}
+				.weibo{
+					color: rgb(216,30,6);
+				}
+				.qq{
+					color: rgb(26,149,243);
+				}
 			}
-
-			.flex image {
-				width: 88rpx;
-				height: 88rpx;
-			}
-
-			.text {
-				height: 30rpx;
-				font-family: PingFang-SC-Regular;
-				font-size: 32rpx;
-				font-weight: bold;
-				font-stretch: normal;
-				line-height: 40rpx;
-				letter-spacing: 3rpx;
-				color: #ffffff;
-			}
+		}
+		.register{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-top: 200rpx;
+			color: #CCCCCC;
+			font-size: 28rpx;
 		}
 	}
+	
+	
 </style>

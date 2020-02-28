@@ -33,7 +33,7 @@
 		</view>
 
 		<view class="content contBot">
-			<navigator url="" hover-class="none" class="list">
+			<navigator url="../mine/bookfav" hover-class="none" class="list">
 				<view class="left"><text class="iconfont iconyanzhengmatianchong" style="color:#ffa700;"></text></view>
 				<view class="right">
 					<view>书籍收藏</view>
@@ -43,7 +43,7 @@
 		</view>
 
 		<view class="content contBot">
-			<navigator url="" hover-class="none" class="list">
+			<navigator url="../mine/editpswd" hover-class="none" class="list">
 				<view class="left"><text class="iconfont iconyanzhengmatianchong" style="color: #6b89c2;"></text></view>
 				<view class="right">
 					<view>修改密码</view>
@@ -76,7 +76,7 @@
 			async logout() {
 				await removeStorage('token');
 				await removeStorage('user');
-				getApp().globalData.token = null
+				getApp().globalData.token = null;
 				uni.showToast({
 					title: '退出成功！',
 					icon: 'none',

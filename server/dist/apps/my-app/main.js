@@ -721,7 +721,7 @@ __decorate([
         required: true,
         example: 'test'
     }),
-    typeorm_1.Column(),
+    typeorm_1.Column({ default: 'Hello World' }),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
 __decorate([
@@ -1299,7 +1299,7 @@ let UserController = class UserController {
         const result = await this.userService.forgetpswd(forgetPswdDto);
         return {
             code: 2000,
-            message: '密码初始化成功，建议您立即修改。',
+            message: '密码重置成功，建议您登录后立即修改。',
             result
         };
     }
@@ -1335,6 +1335,7 @@ let UserController = class UserController {
         };
     }
     async sendForgetpswdEmail(emailDto, req) {
+        console.log(req.body);
         const { email } = req.body;
         const randomCode = this.commonService.randomCode();
         const content = `<h1>${process.env.EMAIL_SUBJECT}管理员致电!</h1><p style="font-size: 18px;color:#000;">尊敬的用户您好，您正在试图找回密码，如非您本人操作，请忽略！验证码为：<u style="font-size: 16px;color:#1890ff;">${randomCode}</u></p><p style="font-size: 14px;color:#ff0000;">验证码10分钟内有效</p>`;
@@ -1407,7 +1408,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "editPswd", null);
 __decorate([
-    common_1.Post('/resister/code'),
+    common_1.Post('/register/code'),
     swagger_1.ApiOperation({ summary: '发送注册验证码' }),
     common_1.UsePipes(myapp_register_pipe_1.MyappRegisterPipe),
     __param(0, common_1.Body()),
@@ -1744,12 +1745,6 @@ const class_validator_1 = __webpack_require__(12);
 const swagger_1 = __webpack_require__(2);
 class RegisterDto extends user_entity_1.User {
 }
-__decorate([
-    class_validator_1.IsNotEmpty({ message: '请输入昵称' }),
-    class_validator_1.MinLength(3, { message: '呢称长度至少为3' }),
-    class_validator_1.MaxLength(10, { message: '呢称长度至多为10' }),
-    __metadata("design:type", String)
-], RegisterDto.prototype, "username", void 0);
 __decorate([
     class_validator_1.IsEmail({ allow_display_name: true }, { message: '请输入正确的邮箱' }),
     __metadata("design:type", String)
@@ -2305,6 +2300,15 @@ let BookshopController = class BookshopController {
             result: book
         };
     }
+    async favStatus(id, req) {
+        const userId = req.user.id;
+        const favList = await this.bookshopService.favStatus(id, userId);
+        return {
+            code: 2000,
+            message: '查询图书收藏状态成功！',
+            result: favList
+        };
+    }
     async downBook(id) {
         await this.bookshopService.downBook(id);
         return {
@@ -2341,6 +2345,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BookshopController.prototype, "findBook", null);
 __decorate([
+    common_1.Get('book/fav/:id'),
+    common_1.UseGuards(passport_1.AuthGuard('myapp-jwt')),
+    swagger_1.ApiBearerAuth(),
+    swagger_1.ApiOperation({ summary: '登陆时查询图书是否被当前用户收藏' }),
+    __param(0, common_1.Param('id')), __param(1, common_1.Request()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], BookshopController.prototype, "favStatus", null);
+__decorate([
     common_1.Get('book/down/:id'),
     swagger_1.ApiOperation({ summary: '下载一本图书' }),
     __param(0, common_1.Param('id')),
@@ -2349,7 +2363,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BookshopController.prototype, "downBook", null);
 __decorate([
-    common_1.Get('book/fav/:id'),
+    common_1.Put('book/fav/:id'),
     common_1.UseGuards(passport_1.AuthGuard('myapp-jwt')),
     swagger_1.ApiBearerAuth(),
     swagger_1.ApiOperation({ summary: '收藏一本图书' }),
@@ -2445,6 +2459,19 @@ let BookshopService = class BookshopService {
         book.bookActions.browse_count++;
         return await this.bookRepository.save(book);
     }
+    async favStatus(id, userId) {
+        let { fav_list } = await typeorm_2.getRepository(user_actions_entity_1.UserActions)
+            .createQueryBuilder('user_actions')
+            .where('user_actions.userId = :userId', { userId })
+            .getOne();
+        const favList = JSON.parse(fav_list);
+        if (favList.includes(Number(id))) {
+            return { isFav: 1 };
+        }
+        else {
+            return { isFav: 0 };
+        }
+    }
     async downBook(id) {
         let book = await this.bookRepository.findOne(id, {
             relations: ['bookActions']
@@ -2455,6 +2482,7 @@ let BookshopService = class BookshopService {
     async favBook(id, userId) {
         let message = '';
         let code = 2000;
+        let isFav = 0;
         let userActions = await typeorm_2.getRepository(user_actions_entity_1.UserActions)
             .createQueryBuilder('user_actions')
             .where('user_actions.userId = :userId', { userId })
@@ -2468,6 +2496,7 @@ let BookshopService = class BookshopService {
         }
         else {
             fav_list.push(Number(id));
+            isFav = 1;
             message = '添加收藏';
         }
         userActions.fav_list = JSON.stringify(fav_list);
@@ -2479,7 +2508,10 @@ let BookshopService = class BookshopService {
         await this.bookRepository.save(book);
         return {
             message,
-            code
+            code,
+            result: {
+                isFav
+            }
         };
     }
 };

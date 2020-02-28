@@ -19,7 +19,7 @@ export class User {
     required: true,
     example: 'test'
   })
-  @Column()
+  @Column({ default: 'Hello World' })
   username: string;
 
   @ApiProperty({ description: '密码', required: true, example: '123456' })

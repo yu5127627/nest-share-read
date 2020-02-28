@@ -42,7 +42,7 @@
 			"style": {
 				"app-plus": {
 					"bounce": "none",
-					"titleNView": false //禁用原生导航栏
+					"titleNView": false
 				}
 			}
 		},
@@ -51,7 +51,7 @@
 			"style": {
 				"app-plus": {
 					"bounce": "none",
-					"titleNView": false //禁用原生导航栏
+					"titleNView": false
 				}
 			}
 		},
@@ -66,9 +66,38 @@
 		{
 			"path": "pages/bookshelf/readBook",
 			"style": {}
-		}
+		},
+		{
+			"path": "pages/user/forgetpswd",
+			"style": {
+				"navigationBarTitleText": "重置密码",
+				"app-plus": {
+					"bounce": "none"
 
-	],
+				}
+			}
+		},
+		{
+			"path": "pages/mine/editpswd",
+			"style": {
+				"navigationBarTitleText": "修改密码",
+				"app-plus": {
+					"bounce": "none"
+				
+				}
+			}
+		},
+		{
+            "path" : "pages/mine/bookfav",
+            "style" : {
+				"navigationBarTitleText": "书籍收藏",
+				"app-plus": {
+					"bounce": "none"
+				
+				}
+			}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "猿来阅",

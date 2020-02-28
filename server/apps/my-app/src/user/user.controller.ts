@@ -60,7 +60,7 @@ export class UserController {
     const result = await this.userService.forgetpswd(forgetPswdDto);
     return {
       code: 2000,
-      message: '密码初始化成功，建议您立即修改。',
+      message: '密码重置成功，建议您登录后立即修改。',
       result
     };
   }
@@ -83,7 +83,7 @@ export class UserController {
     };
   }
 
-  @Post('/resister/code')
+  @Post('/register/code')
   @ApiOperation({ summary: '发送注册验证码' })
   @UsePipes(MyappRegisterPipe)
   async sendResisterEmail(
@@ -122,6 +122,7 @@ export class UserController {
     @Body() emailDto: EmailDto,
     @Request() req
   ): Promise<Client> {
+    console.log(req.body);
     const { email } = req.body;
     const randomCode = this.commonService.randomCode();
     const content = `<h1>${process.env.EMAIL_SUBJECT}管理员致电!</h1><p style="font-size: 18px;color:#000;">尊敬的用户您好，您正在试图找回密码，如非您本人操作，请忽略！验证码为：<u style="font-size: 16px;color:#1890ff;">${randomCode}</u></p><p style="font-size: 14px;color:#ff0000;">验证码10分钟内有效</p>`;

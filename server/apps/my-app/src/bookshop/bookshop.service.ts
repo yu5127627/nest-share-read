@@ -74,6 +74,21 @@ export class BookshopService {
     return await this.bookRepository.save(book); // save 时级联自动保存
   }
 
+  async favStatus(id, userId): Promise<{ isFav: number }> {
+    // 根据 用户id 查询关联的用户活动表
+    let { fav_list } = await getRepository(UserActions)
+      .createQueryBuilder('user_actions')
+      .where('user_actions.userId = :userId', { userId })
+      .getOne();
+    const favList = JSON.parse(fav_list);
+    // 0:未收藏   1:已收藏
+    if (favList.includes(Number(id))) {
+      return { isFav: 1 };
+    } else {
+      return { isFav: 0 };
+    }
+  }
+
   async downBook(id: number): Promise<void> {
     let book = await this.bookRepository.findOne(id, {
       relations: ['bookActions']
@@ -86,6 +101,7 @@ export class BookshopService {
     // 定义返回信息
     let message: string = '';
     let code: number = 2000;
+    let isFav: number = 0;
 
     // 根据 用户id 查询关联的用户活动表
     let userActions = await getRepository(UserActions)
@@ -105,6 +121,7 @@ export class BookshopService {
     } else {
       // 添加收藏
       fav_list.push(Number(id));
+      isFav = 1;
       message = '添加收藏';
     }
 
@@ -121,7 +138,10 @@ export class BookshopService {
 
     return {
       message,
-      code
+      code,
+      result: {
+        isFav
+      }
     };
   }
 }
