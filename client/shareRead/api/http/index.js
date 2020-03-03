@@ -5,7 +5,9 @@ export default function http(options) {
 	// console.log(options)
 	options.url = _config.url + options.url;
 	options.data = options.data ? Object.assign(options.data, _config.data) : _config.data;
-	options.header = {Authorization: 'Bearer ' +uni.getStorageSync('token')}
+	options.header = {
+		Authorization: 'Bearer ' + uni.getStorageSync('token')
+	}
 	return new Promise((resolve, reject) => {
 		// 进行url字符串拼接
 		// 拦截请求
@@ -19,26 +21,23 @@ export default function http(options) {
 				if (options.handle) {
 					reject(response)
 				} else {
-					// console.log(response)
-					const {
-						message,
-						statusCode
-					} = response.data
-					uni.showToast({
-						title: message,
-						duration: 2000,
-						icon: 'none'
-					});
-					reject(response)
-					/* try {
+					try {
 						Promise.reject(response).catch(err => {
-							
-							reject(err)
-							_page_error(response.statusCode || response.errMsg);
+							const {
+								message,
+								statusCode
+							} = response.data
+							  uni.showToast({
+								title: message,
+								duration: 2000,
+								icon: 'none',
+								position: 'bottom'
+							});
+							reject(err.data)
 						});
 					} catch (e) {
 						console.log(e)
-					} */
+					}
 				}
 			}
 

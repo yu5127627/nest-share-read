@@ -121,7 +121,7 @@
 				token: getApp().globalData.token,
 				apiUrl: getApp().globalData.api,
 				book: null,
-				isFav:0,
+				isFav: 0,
 				progress: {
 					percent: 0,
 					isShow: false
@@ -153,14 +153,24 @@
 		},
 		methods: {
 			async handleAddFav() {
+				if (!this.token) {
+					 uni.showToast({
+						title: '请先登录',
+						icon: 'none',
+						duration: 2000,
+						position: 'bottom'
+					})
+					return
+				}
 				const {
-					message,result
+					message,
+					result
 				} = await this.$api.bookshop.favbook(this.book.id);
 				uni.showToast({
 					title: message,
 					icon: 'none',
 					duration: 2000,
-					mask:true
+					mask: true
 				})
 				this.isFav = result.isFav;
 			},
@@ -258,8 +268,8 @@
 					}
 				}
 			},
-			async favStatus(id){
-				if(!this.token) return false
+			async favStatus(id) {
+				if (!this.token) return false
 				const {
 					result
 				} = await this.$api.bookshop.favStatus(id);

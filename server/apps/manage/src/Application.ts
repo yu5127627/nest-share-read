@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UploadModule } from './upload/upload.module';
 import { AuthModule } from 'libs/auth/src';
 import { SiteModule } from './site/site.module';
+import { AppModule } from './app/app.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { SiteModule } from './site/site.module';
     CategoryModule,
     BooksModule,
     UploadModule,
-    SiteModule
+    SiteModule,
+    AppModule
   ]
 })
 export class Application {}

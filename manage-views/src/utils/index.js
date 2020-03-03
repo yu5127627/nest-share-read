@@ -123,3 +123,18 @@ export const isChinese = name => {
   const rep = /^[\u4e00-\u9fa5]+$/
   return !!rep.test(name)
 }
+
+/**
+ * 获取图片的临时地址
+ */
+export const getObjectURL = file => {
+  let url = null
+  if (window.createObjectURL !== undefined) { // basic
+    url = window.createObjectURL(file)
+  } else if (window.webkitURL !== undefined) { // webkit or chrome
+    url = window.webkitURL.createObjectURL(file)
+  } else if (window.URL !== undefined) { // mozilla(firefox)
+    url = window.URL.createObjectURL(file)
+  }
+  return url
+}

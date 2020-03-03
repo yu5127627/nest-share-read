@@ -523,7 +523,7 @@ export default {
       // 规定允许上传的文件最大值
       const MAX_VAL = 1024 * 1024 * 0.5
       // 规定允许上传的文件格式
-      const ALLOW_FORMAT = ['jpg', 'png','jpeg']
+      const ALLOW_FORMAT = ['jpg', 'png', 'jpeg']
       // 以 . 分割文件名称，获取文件后缀名
       const strArr = file.name.split('.')
       if (file.size > MAX_VAL) {

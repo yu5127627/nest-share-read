@@ -1,7 +1,8 @@
 import {
   coverVerification,
   catalogVerification,
-  bookVerification
+  bookVerification,
+  adimgVerification
 } from './upload.config';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import {
@@ -25,7 +26,7 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('cover', coverVerification))
   uploadImg(@UploadedFile() file): { coverUrl: string } {
     const { path } = file;
-    return { coverUrl: '/'+path };
+    return { coverUrl: '/' + path };
   }
 
   @Post('/catalog')
@@ -35,7 +36,7 @@ export class UploadController {
     let catalogArr: Array<string> = [];
     for (const item of files) {
       const { path } = item;
-      catalogArr.push('/'+path);
+      catalogArr.push('/' + path);
     }
     return catalogArr;
   }
@@ -45,6 +46,14 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('book', bookVerification))
   uploadBook(@UploadedFile() file): { bookUrl: string } {
     const { path } = file;
-    return { bookUrl: '/'+path };
+    return { bookUrl: '/' + path };
+  }
+
+  @Post('/adimg')
+  @ApiOperation({ summary: '广告图上传' })
+  @UseInterceptors(FileInterceptor('adimg', adimgVerification))
+  uploadAdimg(@UploadedFile() file): { adimgUrl: string } {
+    const { path } = file;
+    return { adimgUrl: '/' + path };
   }
 }

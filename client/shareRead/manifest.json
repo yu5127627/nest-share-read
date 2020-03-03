@@ -85,9 +85,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "static/APP.9.png",
-                    "xhdpi" : "static/APP.9.png",
-                    "xxhdpi" : "static/APP.9.png"
+                    "hdpi" : "static/app/test.9.png",
+                    "xhdpi" : "static/app/test.9.png",
+                    "xxhdpi" : "static/app/test.9.png"
                 }
             }
         }

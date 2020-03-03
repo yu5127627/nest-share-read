@@ -3,6 +3,7 @@
  * 如果项目很大可以将 url 独立成文件，接口分成不同的模块
  */
 import user from './user'
+import app from './app'
 import bookmanage from './bookmanage'
 import site from './site'
 
@@ -10,5 +11,6 @@ import site from './site'
 export default {
   user,
   bookmanage,
-  site
+  site,
+  app
 }

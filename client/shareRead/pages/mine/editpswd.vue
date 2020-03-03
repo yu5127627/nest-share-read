@@ -37,19 +37,22 @@
 					uni.showToast({
 						title: '新密码不能与当前密码相同',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else if (this.editpswd.firstPswd !== this.editpswd.secondPswd) {
 					uni.showToast({
 						title: '两次新密码输入不一致',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				}else if (this.editpswd.firstPswd.length<6||this.editpswd.firstPswd.length>16) {
 					uni.showToast({
 						title: '密码长度至少为6位，至多为16位',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else {
 					const {
@@ -59,7 +62,8 @@
 					uni.showToast({
 						title: message,
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 					uni.removeStorageSync('token');
 					uni.removeStorageSync('user');

@@ -53,18 +53,19 @@
 		methods: {
 			async handleSendCode() {
 				if (this.verifyCode.isSend) return false
-				this.verifyCode.isSend = true;
 				const {
 					message,
 					result
 				} = await this.$api.user.registercode({
 					email: this.register.email
 				});
+				this.verifyCode.isSend = true;
 				this.register.emailId = result.id;
 				uni.showToast({
 					title: message,
 					duration: 2000,
-					icon: 'none'
+					icon: 'none',
+					position: 'bottom'
 				});
 				// 发送成功  开始倒计时
 				this.verifyCode.timer = setInterval(() => {
@@ -84,25 +85,29 @@
 					uni.showToast({
 						title: '请输入正确的邮箱地址',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else if (!this.register.code) {
 					uni.showToast({
 						title: '请输入验证码',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else if (this.register.firstPswd !== this.register.password) {
 					uni.showToast({
 						title: '两次密码输入不一致',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else if (this.register.firstPswd.length < 6 || this.register.firstPswd.length > 16) {
 					uni.showToast({
 						title: '密码长度至少为6位，至多为16位',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else {
 					const {
@@ -116,7 +121,8 @@
 						title: message,
 						duration: 2000,
 						icon: 'none',
-						mask: true
+						mask: true,
+						position: 'bottom'
 					});
 					setTimeout(() => {
 						uni.redirectTo({

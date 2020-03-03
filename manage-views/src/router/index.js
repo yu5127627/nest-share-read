@@ -94,6 +94,27 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/app',
+    component: Layout,
+    alwaysShow: true,
+    meta: { title: 'APP配置', icon: 'site', roles: ['admin'] },
+    children: [
+      {
+        path: 'version',
+        name: 'version',
+        component: () => import('@/views/app/version'),
+        meta: { title: '安卓版本管理', icon: 'site', roles: ['admin'] }
+      },
+      {
+        path: 'ad',
+        name: 'ad',
+        component: () => import('@/views/app/ad/index'
+        ),
+        meta: { title: '广告管理', icon: 'site', roles: ['admin'] }
+      }
+    ]
+  },
+  {
     path: '/site',
     component: Layout,
     alwaysShow: true,
@@ -104,12 +125,6 @@ export const asyncRoutes = [
         name: 'manager',
         component: () => import('@/views/site/manager'),
         meta: { title: '管理员列表', icon: 'site', roles: ['admin'] }
-      },
-      {
-        path: 'app',
-        name: 'app',
-        component: () => import('@/views/site/app'),
-        meta: { title: 'app版本管理', icon: 'site', roles: ['admin'] }
       }
     ]
   },

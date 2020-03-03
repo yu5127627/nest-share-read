@@ -44,18 +44,19 @@
 		methods: {
 			async handleSendCode() {
 				if (this.verifyCode.isSend) return false
-				this.verifyCode.isSend = true;
 				const {
 					message,
 					result
 				} = await this.$api.user.forgetpswdcode({
 					email: this.forgetpswd.email
 				});
+				this.verifyCode.isSend = true;
 				this.forgetpswd.emailId = result.id;
 				uni.showToast({
 					title: message,
 					duration: 2000,
-					icon: 'none'
+					icon: 'none',
+						position: 'bottom'
 				});
 				// 发送成功  开始倒计时
 				this.verifyCode.timer = setInterval(() => {
@@ -75,13 +76,15 @@
 					uni.showToast({
 						title: '请输入正确的邮箱地址',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else if (!this.forgetpswd.code) {
 					uni.showToast({
 						title: '请输入验证码',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else {
 					const {
@@ -91,7 +94,8 @@
 					uni.showToast({
 						title: message,
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 					this.resetpswd = result.default_pswd;
 				}

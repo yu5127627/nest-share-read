@@ -52,7 +52,8 @@
 					uni.showToast({
 						title: '请输入正确的邮箱地址',
 						duration: 2000,
-						icon: 'none'
+						icon: 'none',
+						position: 'bottom'
 					});
 				} else {
 					const {

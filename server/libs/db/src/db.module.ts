@@ -1,3 +1,4 @@
+import { AdImg } from './entity/ad-img.entity';
 import { UserActions } from './entity/user-actions.entity';
 import { BookActions } from './entity/book-actions.entity';
 import { User } from '@app/db/entity/user.entity';
@@ -28,7 +29,8 @@ import { App } from './entity/app.entity';
           Email,
           App,
           BookActions,
-          UserActions
+          UserActions,
+          AdImg
         ],
         synchronize: true
       })

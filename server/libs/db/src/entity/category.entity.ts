@@ -6,6 +6,7 @@ import {
   OneToMany
 } from 'typeorm';
 import { Book } from './book.entity';
+import { AdImg } from './ad-img.entity';
 
 @Entity()
 export class Category {
@@ -17,6 +18,12 @@ export class Category {
 
   @Column()
   en_name: string;
+
+  @OneToMany(
+    type => AdImg,
+    adImg => adImg.category
+  )
+  adImg: AdImg[];
 
   @OneToMany(
     type => Book,

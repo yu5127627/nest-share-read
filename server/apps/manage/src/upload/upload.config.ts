@@ -23,6 +23,10 @@ export const uploadGlobalConfig = MulterModule.registerAsync({
             checkDirAndCreate(catalogPath);
             cb(null, catalogPath);
             break;
+          case 'adimg':
+            checkDirAndCreate(adimgPath);
+            cb(null, adimgPath);
+            break;
         }
       },
       filename: (req, file, cb) => {
@@ -66,7 +70,7 @@ export const coverVerification: object = {
 };
 
 // 图书储存路径
-export const bookPath: string = 'upload/books';
+const bookPath: string = 'upload/books';
 // 图书验证
 export const bookVerification: object = {
   limits: { fileSize: 1024 * 1024 * 300 },
@@ -83,10 +87,27 @@ export const bookVerification: object = {
 };
 
 // 目录截图储存路径
-export const catalogPath: string = 'upload/images/catalog';
+const catalogPath: string = 'upload/images/catalog';
 // 目录验证
 export const catalogVerification: object = {
   limits: { fileSize: 1024 * 500 },
+  fileFilter(req, file, cb) {
+    const mimetype = file.mimetype.split('/')[0].toLowerCase();
+    const isErr = mimetype === 'image' ? true : false;
+    isErr
+      ? cb(null, isErr)
+      : cb(
+          new BadRequestException('文件格式错误！请确保你上传的为图片。'),
+          false
+        );
+  }
+};
+
+// 广告图储存路径
+const adimgPath: string = 'upload/images/adimg';
+// 封面图验证规则
+export const adimgVerification: object = {
+  limits: { fileSize: 1024 * 500 }, // fileSize:kb
   fileFilter(req, file, cb) {
     const mimetype = file.mimetype.split('/')[0].toLowerCase();
     const isErr = mimetype === 'image' ? true : false;

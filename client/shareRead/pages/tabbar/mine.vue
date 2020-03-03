@@ -81,18 +81,19 @@
 					title: '退出成功！',
 					icon: 'none',
 					duration: 2000,
+					position: 'bottom',
 					success: () => {
-						setTimeout(()=>{
+						setTimeout(() => {
 							uni.navigateTo({
-								url:'../user/login'
+								url: '../user/login'
 							})
-						},2000)
+						}, 2000)
 					}
 				})
 			},
-			getUserinfo(){
+			getUserinfo() {
 				const userinfo = uni.getStorageSync('user');
-				if(userinfo){
+				if (userinfo) {
 					this.userinfo = JSON.parse(userinfo);
 				}
 			}
@@ -104,6 +105,9 @@
 </script>
 
 <style lang="scss">
+	// page {
+	// 	background-color: #f9f9f9;
+	// }
 	.box {
 		width: 100%;
 
