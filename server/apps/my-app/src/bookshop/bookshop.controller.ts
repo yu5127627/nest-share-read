@@ -39,6 +39,17 @@ export class BookshopController {
     };
   }
 
+  @Get('category/ad/:id')
+  @ApiOperation({ summary: '按类别查询广告图' })
+  async findCategoryAdimg(@Param('id') id: number): Promise<Client> {
+    const adimgs = await this.bookshopService.findCategoryAdimg(id);
+    return {
+      code: 2000,
+      message: '查询类别广告图成功！',
+      result: adimgs
+    };
+  }
+
   @Get('book/:id')
   @ApiOperation({ summary: '查询一本图书' })
   async findBook(@Param('id') id: number): Promise<Client> {

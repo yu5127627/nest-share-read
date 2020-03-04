@@ -3,8 +3,8 @@
 		<wuc-tab :tab-list="tabList" :tabCur.sync="TabCur" @change="tabChange"></wuc-tab>
 		<swiper autoplay="true" indicator-dots="true" indicator-color="#ffffff" indicator-active-color="rgba(255,255,255,.6)"
 		 circular="true" style="height: 346rpx;z-index: 999;">
-			<swiper-item v-for="(item,index) in info" :key="index">
-				<image :src="item.content" style="width: 100%;height: 346rpx;"></image>
+			<swiper-item v-for="(item,index) in categoryAdimgs" :key="index">
+				<image :src="item.url" style="width: 100%;height: 346rpx;"></image>
 			</swiper-item>
 		</swiper>
 		<view class="category">
@@ -33,17 +33,13 @@
 	export default {
 		data() {
 			return {
-				apiUrl:getApp().globalData.api,
+				apiUrl: getApp().globalData.api,
 				selectClass: '#13bfa3',
 				TabCur: 0,
 				tabList: null,
-				info: [{
-					content: 'https://aecpm.alicdn.com/tfscom/TB18SIYvAL0gK0jSZFAXXcA9pXa.jpg_q50.jpg'
-				}, {
-					content: 'https://aecpm.alicdn.com/tfscom/TB18SIYvAL0gK0jSZFAXXcA9pXa.jpg_q50.jpg'
-				}],
 				current: 0,
-				categoryData: null
+				categoryData: null,
+				categoryAdimgs: null,
 			}
 		},
 		components: {
@@ -60,8 +56,12 @@
 				this.TabCur = index;
 				const {
 					result
-				} = await this.$api.bookshop.categoryBooks(id)
-				this.categoryData = result
+				} = await this.$api.bookshop.categoryBooks(id);
+				const {
+					result: adimgs
+				} = await this.$api.bookshop.categoryAdimgs(id);
+				this.categoryData = result;
+				this.categoryAdimgs = adimgs;
 			},
 			change(e) {
 				this.current = e.detail.current;
@@ -69,12 +69,16 @@
 			async getCategory() {
 				const {
 					result
-				} = await this.$api.bookshop.category()
+				} = await this.$api.bookshop.category();
 				const {
 					result: categoryBooks
-				} = await this.$api.bookshop.categoryBooks(result[0].id)
+				} = await this.$api.bookshop.categoryBooks(result[0].id);
+				const {
+					result: categoryAdimgs
+				} = await this.$api.bookshop.categoryAdimgs(result[0].id)
 				this.tabList = result;
-				this.categoryData = categoryBooks
+				this.categoryData = categoryBooks;
+				this.categoryAdimgs = categoryAdimgs;
 			}
 		},
 		onLoad() {

@@ -4,12 +4,15 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { App } from '@app/db/entity/app.entity';
 import { Repository } from 'typeorm';
+import { AdImg } from '@app/db/entity/ad-img.entity';
 
 @Injectable()
 export class UpdateService {
   constructor(
     @InjectRepository(App)
-    private readonly appRepository: Repository<App>
+    private readonly appRepository: Repository<App>,
+    @InjectRepository(AdImg)
+    private readonly adImgRepository: Repository<AdImg>
   ) {}
 
   async checkUpdate(appDto: AppDto): Promise<UpdateInfo> {
@@ -49,5 +52,9 @@ export class UpdateService {
     }
 
     return updateInfo;
+  }
+
+  async startAdimg(): Promise<AdImg> {
+    return this.adImgRepository.findOne({ where: { type: 1, status: 1 } });
   }
 }

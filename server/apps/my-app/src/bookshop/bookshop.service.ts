@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection, getRepository } from 'typeorm';
 import { Book } from '@app/db/entity/book.entity';
 import { UserActions } from '@app/db/entity/user-actions.entity';
+import { AdImg } from '@app/db/entity/ad-img.entity';
 
 @Injectable()
 export class BookshopService {
@@ -14,6 +15,8 @@ export class BookshopService {
     private readonly categoryRepository: Repository<Category>,
     @InjectRepository(Book)
     private readonly bookRepository: Repository<Book>,
+    @InjectRepository(AdImg)
+    private readonly adImgRepository: Repository<AdImg>,
     @InjectRepository(UserActions)
     private readonly userActionsRepository: Repository<UserActions>
   ) {}
@@ -60,10 +63,12 @@ export class BookshopService {
       }
     ];
     return result;
-    // categoryBooks,
-    // categoryHotBooks,
-    // categoryNewBooks,
-    // categoryRecommendBooks
+  }
+
+  async findCategoryAdimg(id: number): Promise<AdImg[]> {
+    return this.adImgRepository.find({
+      where: { categoryId: id, type: 2, status: 1 }
+    });
   }
 
   async findBook(id: number): Promise<Book> {

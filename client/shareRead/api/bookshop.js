@@ -16,6 +16,14 @@ const categoryBooks = (id) => {
 	})
 }
 
+// 类别下广告图
+const categoryAdimgs = (id) => {
+	return http({
+		url: `bookshop/category/ad/${id}`,
+		method: 'get'
+	})
+}
+
 // 获取一本图书信息
 const book = (id) => {
 	return http({
@@ -45,5 +53,5 @@ export default {
 	categoryBooks,
 	book,
 	favbook,
-	favStatus
+	favStatus,categoryAdimgs
 }

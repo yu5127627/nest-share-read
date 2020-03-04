@@ -20,8 +20,6 @@
           :multiple="false"
           :auto-upload="false"
         >
-          <!-- <img v-if="status.add&&upload.coverUrl" :src="upload.coverUrl" class="avatar" /> -->
-          <!-- <img v-else-if="status.edit&&upload.coverUrl" :src="upload.coverUrl" class="avatar" /> -->
           <img v-if="from.url" :src="from.url" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>

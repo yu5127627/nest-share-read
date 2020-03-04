@@ -91,6 +91,7 @@
 	.wuc-tab {
 		white-space: nowrap;
 		font-size: 30rpx;
+		background-color: #FFFFFF;
 	}
 
 	.wuc-tab-item {

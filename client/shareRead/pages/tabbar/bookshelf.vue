@@ -144,7 +144,7 @@
 				};
 				let {
 					result
-				} = await this.$api.bookshelf.isUpdate(appInfo);
+				} = await this.$api.bookshelf.verifyUpdate(appInfo);
 				console.log(JSON.stringify(result))
 				if (result.isUpdate !== 0) {
 					this.update.isUpdate = result.isUpdate;

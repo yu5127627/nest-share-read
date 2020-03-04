@@ -193,11 +193,12 @@ const common_1 = __webpack_require__(1);
 const update_controller_1 = __webpack_require__(7);
 const update_service_1 = __webpack_require__(8);
 const app_entity_1 = __webpack_require__(9);
+const ad_img_entity_1 = __webpack_require__(17);
 let UpdateModule = class UpdateModule {
 };
 UpdateModule = __decorate([
     common_1.Module({
-        imports: [typeorm_1.TypeOrmModule.forFeature([app_entity_1.App])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([app_entity_1.App, ad_img_entity_1.AdImg])],
         controllers: [update_controller_1.UpdateController],
         providers: [update_service_1.UpdateService]
     })
@@ -246,6 +247,14 @@ let UpdateController = class UpdateController {
             result: updateInfo
         };
     }
+    async startAdimg() {
+        const adimg = await this.updateService.startAdimg();
+        return {
+            code: 2000,
+            message: '开屏广告获取成功。',
+            result: adimg
+        };
+    }
 };
 __decorate([
     common_1.Post(),
@@ -255,6 +264,13 @@ __decorate([
     __metadata("design:paramtypes", [app_dto_1.AppDto]),
     __metadata("design:returntype", Promise)
 ], UpdateController.prototype, "checkUpdate", null);
+__decorate([
+    common_1.Get('start'),
+    swagger_1.ApiOperation({ summary: '获取开屏广告' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UpdateController.prototype, "startAdimg", null);
 UpdateController = __decorate([
     common_1.Controller('update'),
     swagger_1.ApiTags('app更新'),
@@ -286,9 +302,11 @@ const common_1 = __webpack_require__(1);
 const typeorm_1 = __webpack_require__(6);
 const app_entity_1 = __webpack_require__(9);
 const typeorm_2 = __webpack_require__(10);
+const ad_img_entity_1 = __webpack_require__(17);
 let UpdateService = class UpdateService {
-    constructor(appRepository) {
+    constructor(appRepository, adImgRepository) {
         this.appRepository = appRepository;
+        this.adImgRepository = adImgRepository;
     }
     async checkUpdate(appDto) {
         const { appid } = appDto;
@@ -321,11 +339,16 @@ let UpdateService = class UpdateService {
         }
         return updateInfo;
     }
+    async startAdimg() {
+        return this.adImgRepository.findOne({ where: { type: 1, status: 1 } });
+    }
 };
 UpdateService = __decorate([
     common_1.Injectable(),
     __param(0, typeorm_1.InjectRepository(app_entity_1.App)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, typeorm_1.InjectRepository(ad_img_entity_1.AdImg)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], UpdateService);
 exports.UpdateService = UpdateService;
 
@@ -2475,11 +2498,12 @@ const common_1 = __webpack_require__(1);
 const bookshop_controller_1 = __webpack_require__(53);
 const bookshop_service_1 = __webpack_require__(54);
 const user_actions_entity_1 = __webpack_require__(21);
+const ad_img_entity_1 = __webpack_require__(17);
 let BookshopModule = class BookshopModule {
 };
 BookshopModule = __decorate([
     common_1.Module({
-        imports: [typeorm_1.TypeOrmModule.forFeature([category_entity_1.Category, book_entity_1.Book, user_actions_entity_1.UserActions])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([category_entity_1.Category, book_entity_1.Book, user_actions_entity_1.UserActions, ad_img_entity_1.AdImg])],
         controllers: [bookshop_controller_1.BookshopController],
         providers: [bookshop_service_1.BookshopService]
     })
@@ -2530,6 +2554,14 @@ let BookshopController = class BookshopController {
             result: categoryBooks
         };
     }
+    async findCategoryAdimg(id) {
+        const adimgs = await this.bookshopService.findCategoryAdimg(id);
+        return {
+            code: 2000,
+            message: '查询类别广告图成功！',
+            result: adimgs
+        };
+    }
     async findBook(id) {
         const book = await this.bookshopService.findBook(id);
         return {
@@ -2574,6 +2606,14 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", Promise)
 ], BookshopController.prototype, "findCategoryBooks", null);
+__decorate([
+    common_1.Get('category/ad/:id'),
+    swagger_1.ApiOperation({ summary: '按类别查询广告图' }),
+    __param(0, common_1.Param('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], BookshopController.prototype, "findCategoryAdimg", null);
 __decorate([
     common_1.Get('book/:id'),
     swagger_1.ApiOperation({ summary: '查询一本图书' }),
@@ -2643,10 +2683,12 @@ const typeorm_1 = __webpack_require__(6);
 const typeorm_2 = __webpack_require__(10);
 const book_entity_1 = __webpack_require__(19);
 const user_actions_entity_1 = __webpack_require__(21);
+const ad_img_entity_1 = __webpack_require__(17);
 let BookshopService = class BookshopService {
-    constructor(categoryRepository, bookRepository, userActionsRepository) {
+    constructor(categoryRepository, bookRepository, adImgRepository, userActionsRepository) {
         this.categoryRepository = categoryRepository;
         this.bookRepository = bookRepository;
+        this.adImgRepository = adImgRepository;
         this.userActionsRepository = userActionsRepository;
     }
     async findAllCategory() {
@@ -2689,6 +2731,11 @@ let BookshopService = class BookshopService {
             }
         ];
         return result;
+    }
+    async findCategoryAdimg(id) {
+        return this.adImgRepository.find({
+            where: { categoryId: id, type: 2, status: 1 }
+        });
     }
     async findBook(id) {
         let book = await this.bookRepository.findOne(id, {
@@ -2757,8 +2804,10 @@ BookshopService = __decorate([
     common_1.Injectable(),
     __param(0, typeorm_1.InjectRepository(category_entity_1.Category)),
     __param(1, typeorm_1.InjectRepository(book_entity_1.Book)),
-    __param(2, typeorm_1.InjectRepository(user_actions_entity_1.UserActions)),
+    __param(2, typeorm_1.InjectRepository(ad_img_entity_1.AdImg)),
+    __param(3, typeorm_1.InjectRepository(user_actions_entity_1.UserActions)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], BookshopService);
