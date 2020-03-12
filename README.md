@@ -13,3 +13,5 @@
 #### APP 下载
 
 ![下载地址](shareRead.png)
+
+[下载地址](http://sxczykn.top/app/shareRead.apk)
