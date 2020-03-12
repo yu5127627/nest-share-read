@@ -1,91 +1,42 @@
-# vue-admin-template
+# manage-views
 
-English | [简体中文](./README-zh.md)
+> 此后台管理借鉴自 vue-admin-template
+> 包含权限管理，动态路由，可能不是尽善尽美，有机会再完善。
 
-> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
+#### 使用
 
-**Live demo:** http://panjiachen.github.io/vue-admin-template
-
-
-**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
-
-## Build Setup
-
-
-```bash
-# clone the project
-git clone https://github.com/PanJiaChen/vue-admin-template.git
-
-# enter the project directory
-cd vue-admin-template
-
-# install dependency
+```shell
 npm install
 
-# develop
+# 开发环境
 npm run dev
-```
 
-This will automatically open http://localhost:9528
-
-## Build
-
-```bash
-# build for test environment
-npm run build:stage
-
-# build for production environment
+# 打包部署
 npm run build:prod
 ```
 
-## Advanced
+#### 扩展
 
-```bash
-# preview the release environment effect
-npm run preview
+该管理系统涵盖 vue 全家桶，涵盖以下部分。
 
-# preview the release environment effect + static resource analysis
-npm run preview -- --report
+[VUE '渐进式 JavaScript 框架'](https://cn.vuejs.org/v2/guide/)
 
-# code format check
-npm run lint
+[Vue CLI 致力于将 Vue 生态中的工具基础标准化。](https://cli.vuejs.org/zh/guide/)
 
-# code format check and auto fix
-npm run lint -- --fix
-```
+[Vue Router 是 Vue.js 官方的路由管理器。](https://router.vuejs.org/zh/)
 
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
+[Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。](https://vuex.vuejs.org/zh/)
 
-## Demo
+[Element，一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的桌面端组件库](https://element.eleme.cn/#/zh-CN/component/installation)
 
-![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
+[vue-element-admin 是一个后台前端解决方案，它基于 vue 和 element-ui 实现。](https://panjiachen.github.io/vue-element-admin-site/zh/guide/)
 
-## Extra
+[Axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中。](https://www.kancloud.cn/yunye/axios/234845)
 
-If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
+#### 注意
 
-For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
+由于此项目 css 使用的是 sass,所以可能会依赖到 python 环境。
 
-## Related Project
+百度云地址：https://pan.baidu.com/s/1N1f_-3tG0nTEaeLdLtveRg
 
-- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
-
-- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-
-- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
-
-- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
-
-## Browsers support
-
-Modern browsers and Internet Explorer 10+.
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
-
-## License
-
-[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
-
-Copyright (c) 2017-present PanJiaChen
+提取码：g4vr
