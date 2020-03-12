@@ -33,6 +33,17 @@ export default function http(options) {
 								icon: 'none',
 								position: 'bottom'
 							});
+							if(statusCode===401){
+								uni.removeStorageSync('token');
+								uni.removeStorageSync('user');
+								getApp().globalData.token = null;
+								uni.showToast({
+									title: '登录失效，请重新登陆',
+									duration: 2000,
+									icon: 'none',
+									position: 'bottom'
+								});
+							}
 							reject(err.data)
 						});
 					} catch (e) {

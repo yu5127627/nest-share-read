@@ -1,7 +1,7 @@
 <template>
 	<view class="load">
-		<view class="banner" v-if="first=='1'">
-			<image :src="adimg.url" mode="" class="banner-img"></image>
+		<view class="banner" v-if="first=='1'&&adimg!==null">
+			<image :src="apiUrl+adimg.url" mode="" class="banner-img"></image>
 			<view class="tip" @click="handleGoIndex()">
 				{{timer}}&nbsp;跳过
 			</view>
@@ -9,18 +9,18 @@
 		<swiper class="swiper lead-imgs" v-else>
 			<swiper-item>
 				<view class="swiper-item">
-					<image src="/upload/images/adimg/1583240180724.jpeg" mode="" class="banner-img"></image>
+					<image :src="apiUrl+'/upload/images/adimg/1583240180724.jpeg'" mode="" class="banner-img"></image>
 				</view>
 			</swiper-item>
 			<swiper-item>
 				<view class="swiper-item">
-					<image src="/upload/images/adimg/1583240180724.jpeg" mode="" class="banner-img"></image>
+					<image :src="apiUrl+'/upload/images/adimg/1583240180724.jpeg'" mode="" class="banner-img"></image>
 				</view>
 			</swiper-item>
 			<swiper-item>
 				<view class="swiper-item">
-					<image src="/upload/images/adimg/1583240180724.jpeg" mode="" class="banner-img"></image>
-					<view class="go-index" @click="handleGoIndex()"></view>
+					<image :src="apiUrl+'/upload/images/adimg/1583240180724.jpeg'" mode="" class="banner-img"></image>
+					<view class="go-index" @click="handleGoIndex()">初次进入</view>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -34,7 +34,8 @@
 				timer: 5,
 				first: '0',
 				countdown: null,
-				adimg: null
+				adimg: null,
+				apiUrl: getApp().globalData.api,
 			};
 		},
 		created() {
@@ -43,29 +44,29 @@
 			// 设置应用全屏显示
 			plus.navigator.setFullscreen(true);
 			// #endif
-			// uni.getStorage({
-			// 	key: 'first',
-			// 	success: res => {
-			// 		// console.log(res);
-			// 		this.first = res.data;
-			// 	},
-			// 	fail: err => {
-			// 		// console.log(err);
-			// 	}
-			// });
-			// if (this.first == '1') {
-			// 	this.countdown = setInterval(() => {
-			// 		this.timer--;
-			// 		if (this.timer === 0) {
-			// 			clearInterval(this.countdown);
-			// 			uni.switchTab({
-			// 				url: '../tabbar/bookshelf'
-			// 			})
-			// 		}
-			// 	}, 1000)
-			// } else {
+			uni.getStorage({
+				key: 'first',
+				success: res => {
+					// console.log(res);
+					this.first = res.data;
+				},
+				fail: err => {
+					// console.log(err);
+				}
+			});
+			if (this.first == '1') {
+				this.countdown = setInterval(() => {
+					this.timer--;
+					if (this.timer === 0) {
+						clearInterval(this.countdown);
+						uni.switchTab({
+							url: '../tabbar/bookshelf'
+						})
+					}
+				}, 1000)
+			} else {
 
-			// }
+			}
 
 		},
 		methods: {

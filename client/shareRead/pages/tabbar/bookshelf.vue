@@ -1,6 +1,5 @@
 <template>
 	<view class="book-shelf">
-		<button type="primary" @click="handleReset()">重新加载</button>
 		<view class="reading">
 			<view class="item-row">
 				<view class="item-book" v-for="item in newBooks" :key="item.path" @click="showNkAction(item.path)">
@@ -90,7 +89,7 @@
 								console.log(e)
 								console.error('install fail...');
 							});
-						} 
+						}
 					}
 				});
 			},
@@ -145,7 +144,6 @@
 				let {
 					result
 				} = await this.$api.bookshelf.verifyUpdate(appInfo);
-				console.log(JSON.stringify(result))
 				if (result.isUpdate !== 0) {
 					this.update.isUpdate = result.isUpdate;
 					this.update.content = result.content;
@@ -157,13 +155,23 @@
 					this.updateMask = true;
 				}
 			},
+			async updateUser(){
+				if(!getApp().globalData.token) return false;
+				const userinfo = await this.$api.user.getUserinfo();
+				uni.setStorage({
+					key: 'user',
+					data: JSON.stringify(userinfo.result)
+				})
+			}
+		},
+		onShow() {
+			this.handleReset();
 		},
 		onLoad() {
-			// uni.setNavigationBarTitle({
-			// 		title: "操作菜单-优化版"
-			// 	}),
 			// #ifdef APP-PLUS
 			// 检测 app 更新
+			// 设置应用退出全屏显示
+			plus.navigator.setFullscreen(false);
 			this.isUpdate();
 			// 获取本地已保存的图书
 			uni.getSavedFileList({
@@ -174,7 +182,9 @@
 				}
 			});
 			// #endif
-		},
+			// 获取最新的用户信息
+			this.updateUser()
+		}
 	}
 </script>
 

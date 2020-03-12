@@ -4,7 +4,7 @@
 		<swiper autoplay="true" indicator-dots="true" indicator-color="#ffffff" indicator-active-color="rgba(255,255,255,.6)"
 		 circular="true" style="height: 346rpx;z-index: 999;">
 			<swiper-item v-for="(item,index) in categoryAdimgs" :key="index">
-				<image :src="item.url" style="width: 100%;height: 346rpx;"></image>
+				<image :src="apiUrl+item.url" style="width: 100%;height: 346rpx;"></image>
 			</swiper-item>
 		</swiper>
 		<view class="category">

@@ -154,7 +154,7 @@
 		methods: {
 			async handleAddFav() {
 				if (!this.token) {
-					 uni.showToast({
+					uni.showToast({
 						title: '请先登录',
 						icon: 'none',
 						duration: 2000,
@@ -258,6 +258,9 @@
 					result
 				} = await this.$api.bookshop.book(id);
 				this.book = result;
+				uni.setNavigationBarTitle({
+					title: this.book.zh_name
+				});
 				const books = uni.getStorageSync('books');
 				if (books) {
 					const jsonBooks = JSON.parse(books)
@@ -274,7 +277,6 @@
 					result
 				} = await this.$api.bookshop.favStatus(id);
 				this.isFav = result.isFav;
-				console.log(this.isFav)
 			}
 		},
 		onLoad(op) {
