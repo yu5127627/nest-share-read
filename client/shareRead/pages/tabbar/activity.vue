@@ -1,6 +1,6 @@
 <template>
 	<view>
-		优惠活动
+		优惠活动测试
 	</view>
 </template>
 
