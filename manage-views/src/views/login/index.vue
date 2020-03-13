@@ -59,6 +59,10 @@
         <span>password: any</span>
       </div>
     </el-form>
+    <div class="tip-info">
+      备案编号:
+      <a href="http://www.beian.miit.gov.cn" target="_blank">晋ICP备19004552号</a>
+    </div>
   </div>
 </template>
 
@@ -252,5 +256,20 @@ $light_gray: #eee;
     cursor: pointer;
     user-select: none;
   }
+}
+
+.tip-info {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 1px;
 }
 </style>
